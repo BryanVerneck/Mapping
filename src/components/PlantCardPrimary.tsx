@@ -29,11 +29,12 @@ export const PlantCardPrimary = ({ data, ...rest} : PlantProps) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        maxWidth: '45%',
+        maxWidth: '100%',
         backgroundColor: colors.shape,
-        borderRadius: 20,
+        borderRadius: 10,
         paddingVertical: 10,
-        alignItems: 'center',
+        alignItems: 'flex-start',
+        paddingLeft: 15,
         margin: 10
     },
     text: {

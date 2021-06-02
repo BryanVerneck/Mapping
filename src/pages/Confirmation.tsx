@@ -22,11 +22,12 @@ export function Confirmation(){
                 </Text>
 
                 <Text style={styles.title}>
-                    Prontinho
+                    Tudo certo!
                 </Text>
 
                 <Text style={styles.subtitle}>
-                    Agora vamos começar a cuidar de suas plantinhas com muito cuidado.
+                    Agora vamos começar a conhecer { '\n'} 
+                    melhor a sua região.
                 </Text>
 
                 <View style={styles.footer}>

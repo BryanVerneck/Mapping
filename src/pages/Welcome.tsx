@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/core';
 import colors from '../../styles/colors';
 import fonts from '../../styles/fonts'
 
-import wateringImg from '../assets/watering.png';
+import mapIcon from '../assets/mapIcon.png';
 
 export function Welcome(){
     const navigation = useNavigation();
@@ -18,16 +18,16 @@ export function Welcome(){
         <SafeAreaView style={styles.container}>
             <View style={styles.wrapper}>
                 <Text style={styles.title}>
-                Gerencie {'\n'}
-                suas plantas de{ '\n'}
+                Encontre seu{'\n'}
+                local favorito de{ '\n'}
                 forma fácil
                 </Text>
 
-                <Image source={wateringImg} style={styles.image} resizeMode='contain'/>
+                <Image source={mapIcon} style={styles.image} resizeMode='contain' />
 
                 <Text style={styles.subtitle}>
-                    Não esqueça mais de regar suas plantas.
-                    Nós cuidamos de lembrar você sempre que precisar.
+                Não perca mais tempo procurando { '\n'} 
+                por um lugar novo. Nós procuramos para você.
                 </Text>
 
                 <TouchableOpacity style={styles.button} activeOpacity={0.6} onPress={handleStart}>
@@ -84,8 +84,7 @@ const styles = StyleSheet.create({
         color: colors.white
     },
     image: {
-        height: Dimensions.get('window').width * 0.7
+        height: Dimensions.get('window').width * 0.5
     },
 
-    
 })
