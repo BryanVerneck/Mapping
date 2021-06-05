@@ -4,6 +4,8 @@ import { Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/core';
 import colors from '../../styles/colors';
 import fonts from '../../styles/fonts'
+import LottieView from 'lottie-react-native';
+import SearchingAnimation from '../assets/searchingData.json';
 
 import mapIcon from '../assets/mapIcon.png';
 
@@ -23,7 +25,12 @@ export function Welcome(){
                 forma fácil
                 </Text>
 
-                <Image source={mapIcon} style={styles.image} resizeMode='contain' />
+                <LottieView
+                    source={SearchingAnimation}
+                    autoPlay
+                    loop
+                    style={styles.animation}
+                />
 
                 <Text style={styles.subtitle}>
                 Não perca mais tempo procurando { '\n'} 
@@ -74,16 +81,16 @@ const styles = StyleSheet.create({
         backgroundColor: colors.green,
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 16,
+        borderRadius: 10,
         marginBottom: 20,
         height: 56,
-        width: 56
+        width: 100
     },
     buttonIcon: {
         fontSize: 32,
         color: colors.white
     },
-    image: {
+    animation: {
         height: Dimensions.get('window').width * 0.5
     },
 

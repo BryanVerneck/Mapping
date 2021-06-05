@@ -189,7 +189,7 @@ const styles = StyleSheet.create({
         paddingBottom: 5,
         marginLeft: 30,
         paddingRight: 60,
-        marginVertical: 30,
+        marginVertical: 15,
     },
     plants: {
         flex: 1,
