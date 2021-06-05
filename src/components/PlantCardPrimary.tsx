@@ -7,18 +7,22 @@ import { SvgFromUri } from 'react-native-svg';
 import colors from '../../styles/colors';
 import fonts from '../../styles/fonts';
 
-interface PlantProps extends RectButtonProps {
+interface PlaceProps extends RectButtonProps {
     data: {
         name: string;
-        photo: string;
+        icon: string;
+        place_id: string;
+        photo_reference: string;
+        
     }
 } 
 
-export const PlantCardPrimary = ({ data, ...rest} : PlantProps) => {
+export const PlantCardPrimary = ({ data, ...rest} : PlaceProps) => {
     return(
         <RectButton style={styles.container} {...rest}>
             
-            <SvgFromUri uri={ data.photo } width={70} height={70} />
+            <Image style={styles.image} source={{ uri: data.icon }} />
+    
             <Text style={styles.text}>
                 {data.name}
             </Text>
@@ -42,5 +46,10 @@ const styles = StyleSheet.create({
         fontFamily: fonts.heading,
         marginVertical: 5,
         marginLeft: 10
+    },
+    image: {
+        width: 20,
+        height: 20,
+        marginTop: 5
     }
 })

@@ -9,30 +9,27 @@ import colors from '../../styles/colors';
 import fonts from '../../styles/fonts';
 import { EnviromentButton } from '../components/EnviromentButton';
 import api from '../services/api';
+import mapsApi from '../services/mapsApi';
 import { PlantCardPrimary } from '../components/PlantCardPrimary';
 
-interface EnviromentProps {
+interface TypeProps {
     key: string;
     title: string;
 }
 
-interface PlantProps {
-    id: string;
+interface PlaceProps {
+    place_id: string;
     name: string;
     about: string;
-    water_tips: string;
-    photo: string;
-    environments: [string];
-    frequency: {
-        times: number;
-        repeat_every: string;
-    }
+    icon: string;
+    photo_reference: string;
+    
 }
 
 export function PlantSelect(){
-    const [enviroments, setEnviroments] = useState<EnviromentProps[]>([]);
-    const [plants, setPlants] = useState<PlantProps[]>([]);
-    const [filteredPlants, setFilteredPlants] = useState<PlantProps[]>([]);
+    const [enviroments, setEnviroments] = useState<TypeProps[]>([]);
+    const [plants, setPlants] = useState<PlaceProps[]>([]);
+    const [filteredPlants, setFilteredPlants] = useState<PlaceProps[]>([]);
     const [environmentSelected, setEnvironmentSelected] = useState('all');
     const [loading, setLoading] = useState(true);
 
@@ -41,33 +38,33 @@ export function PlantSelect(){
     const [loadedAll, setLoadedAll] = useState(false);
 
     function handleEnvironmentSelected(environment: string){
-        setEnvironmentSelected(environment);
+        // setEnvironmentSelected(environment);
 
-        if(environment == 'all')
-            return setFilteredPlants(plants);
+        // if(environment == 'all')
+        //     return setFilteredPlants(plants);
         
-        const filtered = plants.filter(plant => 
-            plant.environments.includes(environment)
-        );
+        // const filtered = plants.filter(plant => 
+        //     plant.environments.includes(environment)
+        // );
 
-        setFilteredPlants(filtered);
+        // setFilteredPlants(filtered);
     }
 
-    async function fetchPlants(){
-        const { data } = await api
-        .get(`plants?_sort=name&_order=asc&_page=${page}&_limit=8`);        
+    async function fetchPlants() {
+        // const { data } = await api.get(`plants?_sort=name&_order=asc&_page=${page}&_limit=8`);
+        const { data } = await mapsApi.get(``);
+        console.log("--------------------")
+        console.log(data.results)
 
-        if(!data)
+        if(!data.results)
             return setLoading(true);
-
         if(page > 1){
-            setPlants(oldValue => [...oldValue, ...data])
-            setFilteredPlants(oldValue => [...oldValue, ...data])
-        }else {
-            setPlants(data);
-            setFilteredPlants(data);
+            // setPlants(oldValue => [...oldValue, ...data.results])
+            // setFilteredPlants(oldValue => [...oldValue, ... data.results])
+        }else{
+            setPlants(data.results);
+            setFilteredPlants(data.results);
         }
-        
         setLoading(false);
         setLoadingMore(false);
     }
@@ -100,27 +97,8 @@ export function PlantSelect(){
     }, [])
 
     useEffect(() => {
-        async function fetchPlants() {
-            const { data } = await api.get(`plants?_sort=name&_order=asc&_page=${page}&_limit=8`);
-            
-            if(!data)
-                return setLoading(true);
-
-            if(page > 1){
-                setPlants(oldValue => [...oldValue, ...data])
-                setFilteredPlants(oldValue => [...oldValue, ... data])
-            }else{
-                setPlants(data);
-                setFilteredPlants(data);
-            }
-            setLoading(false);
-            setLoadingMore(false);
-        }
-        
         fetchPlants();
-
     }, [])
-
 
     if(loading){
         return <Load />
@@ -159,7 +137,7 @@ export function PlantSelect(){
             <View style={styles.plants}>
             <FlatList 
                 data={filteredPlants}
-                keyExtractor={(item) => String(item.id)}
+                keyExtractor={(item) => String(item.place_id)}
                 renderItem={({ item }) => (
                     <PlantCardPrimary 
                         data={item} 

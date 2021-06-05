@@ -1,7 +1,7 @@
 export default {
-  green: '#26547C',
+  green: '#1e75e9',
   green_dark: 'black',
-  green_light: '#26547C80',
+  green_light: '#83b8e2',
 
   heading: 'black',
   body_dark: '#738078',
