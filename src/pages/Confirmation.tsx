@@ -11,7 +11,7 @@ export function Confirmation(){
     const navigation = useNavigation();
 
     function handleMoveOn(){
-        navigation.navigate('PlantSelect');
+        navigation.navigate('PlaceSelect');
     }
 
     return(

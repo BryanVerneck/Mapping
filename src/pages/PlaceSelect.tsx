@@ -10,7 +10,7 @@ import fonts from '../../styles/fonts';
 import { EnviromentButton } from '../components/EnviromentButton';
 import api from '../services/api';
 import mapsApi from '../services/mapsApi';
-import { PlantCardPrimary } from '../components/PlantCardPrimary';
+import { PlaceCardPrimary } from '../components/PlaceCardPrimary';
 
 interface TypeProps {
     key: string;
@@ -20,16 +20,13 @@ interface TypeProps {
 interface PlaceProps {
     place_id: string;
     name: string;
-    about: string;
     icon: string;
-    photo_reference: string;
-    
 }
 
-export function PlantSelect(){
+export function placeSelect(){
     const [enviroments, setEnviroments] = useState<TypeProps[]>([]);
-    const [plants, setPlants] = useState<PlaceProps[]>([]);
-    const [filteredPlants, setFilteredPlants] = useState<PlaceProps[]>([]);
+    const [place, setPlaces] = useState<PlaceProps[]>([]);
+    const [filteredPlaces, setFilteredPlaces] = useState<PlaceProps[]>([]);
     const [environmentSelected, setEnvironmentSelected] = useState('all');
     const [loading, setLoading] = useState(true);
 
@@ -41,17 +38,17 @@ export function PlantSelect(){
         // setEnvironmentSelected(environment);
 
         // if(environment == 'all')
-        //     return setFilteredPlants(plants);
+        //     return setFilteredPlaces(places);
         
-        // const filtered = plants.filter(plant => 
-        //     plant.environments.includes(environment)
+        // const filtered = places.filter(place => 
+        //     place.environments.includes(environment)
         // );
 
-        // setFilteredPlants(filtered);
+        // setFilteredPlaces(filtered);
     }
 
-    async function fetchPlants() {
-        // const { data } = await api.get(`plants?_sort=name&_order=asc&_page=${page}&_limit=8`);
+    async function fetchPlaces() {
+        // const { data } = await api.get(`places?_sort=name&_order=asc&_page=${page}&_limit=8`);
         const { data } = await mapsApi.get(``);
         console.log("--------------------")
         console.log(data.results)
@@ -59,11 +56,11 @@ export function PlantSelect(){
         if(!data.results)
             return setLoading(true);
         if(page > 1){
-            // setPlants(oldValue => [...oldValue, ...data.results])
-            // setFilteredPlants(oldValue => [...oldValue, ... data.results])
+            // setPlaces(oldValue => [...oldValue, ...data.results])
+            // setFilteredPlaces(oldValue => [...oldValue, ... data.results])
         }else{
-            setPlants(data.results);
-            setFilteredPlants(data.results);
+            setPlaces(data.results);
+            setFilteredPlaces(data.results);
         }
         setLoading(false);
         setLoadingMore(false);
@@ -75,13 +72,13 @@ export function PlantSelect(){
 
         setLoadingMore(true);
         setPage(oldValue => oldValue + 1);
-        fetchPlants();
+        fetchPlaces();
     }
 
     useEffect(() => {
         async function fetchEnviroment() {
             const { data } = await api.get(
-                'plants_environments?_sort=title&_order=asc'
+                'places_environments?_sort=title&_order=asc'
             );
             setEnviroments([
                 {
@@ -97,7 +94,7 @@ export function PlantSelect(){
     }, [])
 
     useEffect(() => {
-        fetchPlants();
+        fetchPlaces();
     }, [])
 
     if(loading){
@@ -134,14 +131,14 @@ export function PlantSelect(){
                />
            </View>
                     
-            <View style={styles.plants}>
+            <View style={styles.places}>
             <FlatList 
-                data={filteredPlants}
+                data={filteredPlaces}
                 keyExtractor={(item) => String(item.place_id)}
                 renderItem={({ item }) => (
-                    <PlantCardPrimary 
+                    <PlaceCardPrimary 
                         data={item} 
-                        // onPress={() => handlePlantSelect(item)}
+                        // onPress={() => handlePlaceSelect(item)}
                     />
                     )}
                     showsVerticalScrollIndicator={false}
@@ -191,7 +188,7 @@ const styles = StyleSheet.create({
         paddingRight: 60,
         marginVertical: 15,
     },
-    plants: {
+    places: {
         flex: 1,
         paddingHorizontal: 32,
         justifyContent: 'center',

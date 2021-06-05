@@ -1,10 +1,5 @@
 {
-  "plants_water_frequencies": [
-    {"key": "day", "title": "Todos os dias"},
-    {"key": "week", "title": "A cada semana"}
-  ],
-
-  "plants_environments": [
+  "places_environments": [
     {"key": "living_room", "title": "Restaurantes"},
     {"key": "bedroom", "title": "Bares"},
     {"key": "kitchen", "title": "Parques"},

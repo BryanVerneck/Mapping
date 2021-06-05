@@ -12,12 +12,11 @@ interface PlaceProps extends RectButtonProps {
         name: string;
         icon: string;
         place_id: string;
-        photo_reference: string;
         
     }
 } 
 
-export const PlantCardPrimary = ({ data, ...rest} : PlaceProps) => {
+export const PlaceCardPrimary = ({ data, ...rest} : PlaceProps) => {
     return(
         <RectButton style={styles.container} {...rest}>
             
