@@ -11,6 +11,7 @@ import { EnviromentButton } from '../components/EnviromentButton';
 import api from '../services/api';
 import mapsApi from '../services/mapsApi';
 import { PlaceCardPrimary } from '../components/PlaceCardPrimary';
+import GetLocation from 'react-native-get-location';
 
 interface TypeProps {
     key: string;
@@ -23,13 +24,12 @@ interface PlaceProps {
     icon: string;
 }
 
-export function placeSelect(){
+export function PlaceSelect(){
     const [enviroments, setEnviroments] = useState<TypeProps[]>([]);
     const [place, setPlaces] = useState<PlaceProps[]>([]);
     const [filteredPlaces, setFilteredPlaces] = useState<PlaceProps[]>([]);
     const [environmentSelected, setEnvironmentSelected] = useState('all');
     const [loading, setLoading] = useState(true);
-
     const [page, setPage] = useState(1);
     const [loadingMore, setLoadingMore] = useState(false);
     const [loadedAll, setLoadedAll] = useState(false);
@@ -50,8 +50,8 @@ export function placeSelect(){
     async function fetchPlaces() {
         // const { data } = await api.get(`places?_sort=name&_order=asc&_page=${page}&_limit=8`);
         const { data } = await mapsApi.get(``);
-        console.log("--------------------")
-        console.log(data.results)
+        // console.log("--------------------")
+        // console.log(data.results)
 
         if(!data.results)
             return setLoading(true);
@@ -78,7 +78,7 @@ export function placeSelect(){
     useEffect(() => {
         async function fetchEnviroment() {
             const { data } = await api.get(
-                'places_environments?_sort=title&_order=asc'
+                'places_environments'
             );
             setEnviroments([
                 {

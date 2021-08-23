@@ -7,7 +7,10 @@ import colors from '../../styles/colors';
 import { Confirmation } from '../pages/Confirmation';
 import { Welcome } from '../pages/Welcome';
 import { UserIdentification } from '../pages/UserIdentification';
-import { placeSelect } from '../pages/PlaceSelect';
+import { PlaceSelect } from '../pages/PlaceSelect';
+import { Preferences } from '../pages/Preferences';
+import { Login } from '../pages/Login';
+import { Registration } from '../pages/Registration';
 
 const stackRoutes = createStackNavigator();
 
@@ -27,6 +30,11 @@ const AppRoutes: React.FC = () => (
         />
 
         <stackRoutes.Screen 
+            name="Preferences"
+            component={Preferences}
+        />
+
+        <stackRoutes.Screen 
             name="UserIdentification"
             component={UserIdentification}
         />
@@ -38,7 +46,17 @@ const AppRoutes: React.FC = () => (
 
         <stackRoutes.Screen 
             name="PlaceSelect"
-            component={placeSelect}
+            component={PlaceSelect}
+        />
+
+        <stackRoutes.Screen 
+            name="Login"
+            component={Login}
+        />
+
+        <stackRoutes.Screen 
+            name="Registration"
+            component={Registration}
         />
 
     </stackRoutes.Navigator>

@@ -7,13 +7,13 @@ import fonts from '../../styles/fonts'
 import LottieView from 'lottie-react-native';
 import SearchingAnimation from '../assets/searchingData.json';
 
-import mapIcon from '../assets/mapIcon.png';
-
 export function Welcome(){
     const navigation = useNavigation();
     
     function handleStart(){
-        navigation.navigate('UserIdentification');
+        navigation.navigate('Login');
+        // navigation.navigate('Preferences');
+        // navigation.navigate('Registration');
     }
 
     return(

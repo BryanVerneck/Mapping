@@ -10,33 +10,18 @@ import { SafeAreaView,
     Keyboard
 } from 'react-native';
 import { Button } from '../components/Button';
+import Input from '../components/Input';
 import colors from '../../styles/colors';
 import fonts from '../../styles/fonts';
 import { useNavigation } from '@react-navigation/core';
 
 export function UserIdentification(){
-    const [ isFocused, setIsFocused ] = useState(false);
-    const [ isFilled, setIsFilled ] = useState(false);
-    const [ name, setName ] = useState<string>();
 
     const navigation = useNavigation();
 
     function handleSubmit(){
-        navigation.navigate('Confirmation');
-    }
-
-    function handleInputBlur(){
-        setIsFocused(false);
-        setIsFilled(!!name);
-    }
-
-    function handleInputFocus(){
-        setIsFocused(true);
-    }
-
-    function handleInputChange(value: string){
-        setIsFilled(!!value);
-        setName(value);
+      navigation.navigate('PlaceSelect');
+      // navigation.navigate('Confirmation');
     }
 
     return(
@@ -58,19 +43,10 @@ export function UserIdentification(){
                                 </Text>
                             </View>
 
-                            <TextInput
-                                style={[
-                                    styles.input,
-                                    (isFocused || isFilled) && { borderColor: colors.green }
-                                ]}
-                                placeholder="Digite um nome"
-                                onBlur={handleInputBlur}
-                                onFocus={handleInputFocus}
-                                onChangeText={handleInputChange}
-                            />
+                            <Input placeholder="Nome de usuário"/>
                             
                             <View style={styles.footer}>
-                                <Button title="Confirmar" onPress={handleSubmit}/>
+                                <Button alt={false} title="Confirmar" onPress={handleSubmit}/>
                             </View>
                         
                         </View>
@@ -103,16 +79,6 @@ const styles = StyleSheet.create({
     },
     header: {
         alignItems: 'center'
-    },
-    input: {
-        borderBottomWidth: 1,
-        borderColor: colors.gray,
-        color: colors.heading,
-        width: '100%',
-        fontSize: 18,
-        marginTop: 50,
-        padding: 10,
-        textAlign: 'center'
     },
     title: {
         fontSize: 24,
