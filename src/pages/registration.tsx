@@ -24,13 +24,13 @@ export function Registration(){
             <View style={styles.form}>
               <View style={styles.header}>
                 <Text style={styles.title}>
-                    Precisamos de apenas mais algumas informações
+                    Precisamos de apenas algumas informações
                 </Text>
               </View>
-              <Input placeholder="E-mail"/>
-              <Input placeholder="Senha"/>
-              <Input placeholder="Idade"/>
-              <Input placeholder="Sexo"/>
+              <Input placeholder="E-mail" />
+              <Input placeholder="Senha" />
+              <Input placeholder="Idade" />
+              <Input placeholder="Sexo" />
               <View style={styles.loginButton}>
                 <Button
                 title="Confirmar"

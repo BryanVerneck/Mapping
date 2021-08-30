@@ -8,7 +8,7 @@ export default {
   body_light: '#AAB2AD',
 
   background: '#FFFFFF',
-  shape: '#f9f9f9',
+  shape: '#f4f4f4',
   white: '#FFFFFF',
   gray: '#CFCFCF',
 

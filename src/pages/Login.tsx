@@ -7,14 +7,9 @@ import fonts from '../../styles/fonts';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
 
-interface FormData {
-  name: string
-  email: string
-}
-
 export function Login(){
-  const [email, onChangeEmail] = useState('');
-  const [password, onChangePassword] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const navigation = useNavigation();
 
@@ -26,6 +21,14 @@ export function Login(){
   function handleRegistration(){
     navigation.navigate('Registration');
     // navigation.navigate('Confirmation');
+  }
+
+  function handleEmailInputChange(value: string){
+    setEmail(value);
+  }
+
+  function handlePasswordInputChange(value: string){
+    setPassword(value);
   }
 
   return(
@@ -41,8 +44,8 @@ export function Login(){
                     Olá, seja muito bem-vindo!
                 </Text>
               </View>
-              <Input placeholder="E-mail de usuário"/>
-              <Input placeholder="Senha"/>
+              <Input placeholder="E-mail de usuário" onChange={handleEmailInputChange}/>
+              <Input placeholder="Senha" onChange={handlePasswordInputChange}/>
               <View style={styles.loginButton}>
                 <Button
                 title="Login"

@@ -1,20 +1,20 @@
-import React, { useRef, useEffect, useCallback, useState } from 'react'
-import { TextInput, TextInputProps, Text, StyleSheet } from 'react-native'
+import React, { useState } from 'react'
+import { TextInput, StyleSheet } from 'react-native'
 import colors from '../../styles/colors';
-import { useField } from '@unform/core'
 
 interface PlaceholderProps {
   placeholder: string;
+  onChange: any;
 }
 
-export default function Input({ placeholder } : PlaceholderProps){
+export default function Input({ placeholder, onChange } : PlaceholderProps){
   const [ isFocused, setIsFocused ] = useState(false);
   const [ isFilled, setIsFilled ] = useState(false);
   const [ name, setName ] = useState<string>();
   
   function handleInputBlur(){
-  setIsFocused(false);
-  setIsFilled(!!name);
+    setIsFocused(false);
+    setIsFilled(!!name);
   }
 
   function handleInputFocus(){
@@ -35,8 +35,9 @@ export default function Input({ placeholder } : PlaceholderProps){
       placeholder={placeholder}
       onBlur={handleInputBlur}
       onFocus={handleInputFocus}
-      onChangeText={handleInputChange}
+      onChangeText={onChange}
       keyboardType="default"
+      // maxLength={15}
     />
   )
 }

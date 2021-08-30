@@ -2,59 +2,72 @@ import React, { useState } from 'react'
 import { SafeAreaView, 
     StyleSheet, 
     View, 
-    Text, 
-    TextInput, 
+    Text,  
     KeyboardAvoidingView, 
     Platform, 
     TouchableWithoutFeedback,
-    Keyboard
+    Keyboard,
+    Alert,
 } from 'react-native';
 import { Button } from '../components/Button';
 import Input from '../components/Input';
 import colors from '../../styles/colors';
 import fonts from '../../styles/fonts';
 import { useNavigation } from '@react-navigation/core';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export function UserIdentification(){
+  const [ name, setName ] = useState('');
 
-    const navigation = useNavigation();
+  const navigation = useNavigation();
 
-    function handleSubmit(){
-      navigation.navigate('PlaceSelect');
-      // navigation.navigate('Confirmation');
+  async function handleSubmit(){
+    if(!name){
+      return Alert.alert('Me diz como chamar você 😥')
     }
 
-    return(
-        <SafeAreaView style={styles.container}>
-            <KeyboardAvoidingView 
-                style={styles.container}
-                behavior={ Platform.OS === 'ios' ? 'padding' : 'height'}>
+    await AsyncStorage.setItem('@mapping:user', name);
     
-                <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                    <View style={styles.content}>
-                        <View style={styles.form}>
-                            <View style={styles.header}>
-                                <Text style={styles.emoji}>
-                                    😃
-                                </Text>
-                                <Text style={styles.title}>
-                                    Como podemos {'\n'}
-                                    chamar você?
-                                </Text>
-                            </View>
+    navigation.navigate('PlaceSelect');
+    // navigation.navigate('Confirmation');
 
-                            <Input placeholder="Nome de usuário"/>
-                            
-                            <View style={styles.footer}>
-                                <Button alt={false} title="Confirmar" onPress={handleSubmit}/>
-                            </View>
-                        
-                        </View>
-                    </View>
-                </TouchableWithoutFeedback>
-            </KeyboardAvoidingView>
-        </SafeAreaView>
-    )
+  }
+
+  function handleInputChange(value: string){
+    setName(value);
+}
+
+  return(
+      <SafeAreaView style={styles.container}>
+          <KeyboardAvoidingView 
+              style={styles.container}
+              behavior={ Platform.OS === 'ios' ? 'padding' : 'height'}>
+  
+              <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                  <View style={styles.content}>
+                      <View style={styles.form}>
+                          <View style={styles.header}>
+                              <Text style={styles.emoji}>
+                                  😃
+                              </Text>
+                              <Text style={styles.title}>
+                                  Como podemos {'\n'}
+                                  chamar você?
+                              </Text>
+                          </View>
+
+                          <Input placeholder="Nome de usuário" onChange={handleInputChange}/>
+                          
+                          <View style={styles.footer}>
+                              <Button alt={false} title="Confirmar" onPress={handleSubmit}/>
+                          </View>
+                      
+                      </View>
+                  </View>
+              </TouchableWithoutFeedback>
+          </KeyboardAvoidingView>
+      </SafeAreaView>
+  )
 }
 
 const styles = StyleSheet.create({

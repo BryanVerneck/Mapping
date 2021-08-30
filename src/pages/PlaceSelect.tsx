@@ -8,10 +8,9 @@ import { Header } from '../components/Header';
 import colors from '../../styles/colors';
 import fonts from '../../styles/fonts';
 import { EnviromentButton } from '../components/EnviromentButton';
-import api from '../services/api';
 import mapsApi from '../services/mapsApi';
 import { PlaceCardPrimary } from '../components/PlaceCardPrimary';
-import GetLocation from 'react-native-get-location';
+import placeType from '../services/server.json';
 
 interface TypeProps {
     key: string;
@@ -22,11 +21,12 @@ interface PlaceProps {
     place_id: string;
     name: string;
     icon: string;
+    types: [string];
 }
 
 export function PlaceSelect(){
     const [enviroments, setEnviroments] = useState<TypeProps[]>([]);
-    const [place, setPlaces] = useState<PlaceProps[]>([]);
+    const [places, setPlaces] = useState<PlaceProps[]>([]);
     const [filteredPlaces, setFilteredPlaces] = useState<PlaceProps[]>([]);
     const [environmentSelected, setEnvironmentSelected] = useState('all');
     const [loading, setLoading] = useState(true);
@@ -34,25 +34,23 @@ export function PlaceSelect(){
     const [loadingMore, setLoadingMore] = useState(false);
     const [loadedAll, setLoadedAll] = useState(false);
 
-    function handleEnvironmentSelected(environment: string){
-        // setEnvironmentSelected(environment);
+    function handleEnvironmentSelected(type: string){
+        setEnvironmentSelected(type);
 
-        // if(environment == 'all')
-        //     return setFilteredPlaces(places);
+        if(type == 'all')
+            return setFilteredPlaces(places);
         
-        // const filtered = places.filter(place => 
-        //     place.environments.includes(environment)
-        // );
+        const filtered = places.filter(place => 
+            place.types.includes(type)
+        );
 
-        // setFilteredPlaces(filtered);
+        setFilteredPlaces(filtered);
     }
 
     async function fetchPlaces() {
         // const { data } = await api.get(`places?_sort=name&_order=asc&_page=${page}&_limit=8`);
-        const { data } = await mapsApi.get(``);
-        // console.log("--------------------")
-        // console.log(data.results)
-
+        const { data } = await mapsApi.get(`/json?location=-33.8670522,151.195736&radius=1000&keyword=restaurant|bar|park|museum&key=AIzaSyC_gkGpo4lfPP7bVMqBeMfu2nB7JmRfgF0`);
+       
         if(!data.results)
             return setLoading(true);
         if(page > 1){
@@ -77,9 +75,10 @@ export function PlaceSelect(){
 
     useEffect(() => {
         async function fetchEnviroment() {
-            const { data } = await api.get(
-                'places_environments'
-            );
+            // const { data } = await api.get(
+            //     'places_environments'
+            // );
+            const data = placeType.places_environments;
             setEnviroments([
                 {
                     key: 'all',

@@ -6,7 +6,7 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/splashMap.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -28,6 +28,7 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "description": ""
+    "description": "",
+    "githubUrl": "https://github.com/BryanVerneck/Mapping.git"
   }
 }
