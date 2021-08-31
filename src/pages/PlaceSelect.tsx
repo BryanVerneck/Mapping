@@ -11,6 +11,7 @@ import { EnviromentButton } from '../components/EnviromentButton';
 import mapsApi from '../services/mapsApi';
 import { PlaceCardPrimary } from '../components/PlaceCardPrimary';
 import placeType from '../services/server.json';
+import { useNavigation } from '@react-navigation/native';
 
 interface TypeProps {
     key: string;
@@ -33,6 +34,8 @@ export function PlaceSelect(){
     const [page, setPage] = useState(1);
     const [loadingMore, setLoadingMore] = useState(false);
     const [loadedAll, setLoadedAll] = useState(false);
+
+    const navigation = useNavigation()
 
     function handleEnvironmentSelected(type: string){
         setEnvironmentSelected(type);
@@ -71,6 +74,10 @@ export function PlaceSelect(){
         setLoadingMore(true);
         setPage(oldValue => oldValue + 1);
         fetchPlaces();
+    }
+
+    function handlePlaceSelected(place: PlaceProps){
+      navigation.navigate('PlaceDetail', {place});
     }
 
     useEffect(() => {
@@ -137,7 +144,7 @@ export function PlaceSelect(){
                 renderItem={({ item }) => (
                     <PlaceCardPrimary 
                         data={item} 
-                        // onPress={() => handlePlaceSelect(item)}
+                        onPress={() => handlePlaceSelected(item)}
                     />
                     )}
                     showsVerticalScrollIndicator={false}
