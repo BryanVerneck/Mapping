@@ -12,6 +12,7 @@ import { Preferences } from '../pages/Preferences';
 import { Login } from '../pages/Login';
 import { Registration } from '../pages/Registration';
 import { PlaceDetail } from '../pages/placeDetail';
+import { Profession } from '../pages/Profession';
 
 const stackRoutes = createStackNavigator();
 
@@ -63,6 +64,11 @@ const AppRoutes: React.FC = () => (
         <stackRoutes.Screen 
             name="PlaceDetail"
             component={PlaceDetail}
+        />
+
+        <stackRoutes.Screen 
+            name="Profession"
+            component={Profession}
         />
 
     </stackRoutes.Navigator>

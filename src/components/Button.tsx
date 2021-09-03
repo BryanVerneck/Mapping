@@ -39,7 +39,7 @@ export function Button({ title, alt, ...rest } : ButtonProps){
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: color.green,
+        backgroundColor: color.main,
         height: 56,
         borderRadius: 10,
         justifyContent: 'center',
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     alternativeContainer: {
       backgroundColor: color.white,
       borderWidth: 0.5,
-      borderColor: color.green,
+      borderColor: color.main,
       height: 56,
       borderRadius: 10,
       justifyContent: 'center',
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     },
     alternativeText: {
         fontSize: 16,
-        color: colors.green,
+        color: colors.main,
         fontFamily: fonts.heading
     }
 })

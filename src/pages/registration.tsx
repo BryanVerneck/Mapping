@@ -5,13 +5,41 @@ import colors from '../../styles/colors';
 import fonts from '../../styles/fonts';
 import { Button } from '../components/Button';
 import Input from '../components/Input';
+import DateTimePicker from '@react-native-community/datetimepicker'
+import { InputButton } from '../components/InputButton';
 
 export function Registration(){
+  const [ email, setEmail ] = useState('');
+  const [ senha, setSenha ] = useState('');
+  const [ confirmarSenha, setConfirmarSenha ] = useState('');
+  const [ dataNascimento, setdataNascimento ] = useState(new Date());
+  const [ check, setCheck ] = useState(false);
 
   const navigation = useNavigation();
 
   function handleSubmit(){
-    navigation.navigate('Preferences');
+    if(!email){
+      return Alert.alert('Precisamos que você preencha todos os dados 🙁')
+    }else{
+      navigation.navigate('Preferences');
+    }
+  }
+
+  const onChange = () => {
+    // setdataNascimento();
+  };
+
+  function showDatePicker(){
+    return(
+      <DateTimePicker
+          testID="dateTimePicker"
+          value={dataNascimento}
+          mode="date"
+          is24Hour={true}
+          display="default"
+          onChange={onChange}
+        />
+    )
   }
 
   return(
@@ -27,10 +55,14 @@ export function Registration(){
                     Precisamos de apenas algumas informações
                 </Text>
               </View>
-              <Input placeholder="E-mail" />
-              <Input placeholder="Senha" />
-              <Input placeholder="Idade" />
-              <Input placeholder="Sexo" />
+              <Input placeholder="E-mail" type="email-address" onChange={(value: string) => setEmail(value)}/>
+              <Input placeholder="Senha" type="visible-password" onChange={(value: string) => setEmail(value)}/>
+              <Input placeholder="Confirmar senha" type="visible-password" onChange={(value: string) => setEmail(value)}/>
+              <Input placeholder="Sexo" type="default" onChange={(value: string) => setEmail(value)}/>
+              <InputButton
+                title="Data de nascimento"
+                onPress={showDatePicker}
+                />
               <View style={styles.loginButton}>
                 <Button
                 title="Confirmar"
@@ -81,5 +113,14 @@ loginButton: {
     marginTop: 40,
     width: '100%',
     paddingHorizontal: 20  
+},
+dateButton: {
+    borderBottomWidth: 1,
+    borderColor: colors.gray,
+    width: '100%',
+    marginTop: 50,
+    padding: 10,
+    color: 'black',
+    fontSize: 20
 }
 })

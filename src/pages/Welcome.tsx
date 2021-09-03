@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
         fontFamily: fonts.text
     },
     button: {
-        backgroundColor: colors.green,
+        backgroundColor: colors.main,
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 10,

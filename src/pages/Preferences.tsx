@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {  SafeAreaView, 
     StyleSheet, 
     View, 
@@ -7,26 +7,40 @@ import {  SafeAreaView,
     Platform, 
     TouchableWithoutFeedback,
     Keyboard, 
-    CheckBox } from 'react-native';
+    } from 'react-native';
 import { Button } from '../components/Button';
 import colors from '../../styles/colors';
 import { useNavigation } from '@react-navigation/core';
 import fonts from '../../styles/fonts';
 import { Check } from '../components/Check';
+import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
+import herokuApi from '../services/HerokuAPI';
 
 export function Preferences(){
-    const [esportes, setEsportes] = useState(false);
-    const [musica, setMusica] = useState(false);
-    const [game, setGame] = useState(false);
-    const [arte, setArte] = useState(false);
-    const [design, setDesign] = useState(false);
-    const [ automobilismo, setAutomobilismo ] = useState(false);
-    const [ name, setName ] = useState();
+  const [preference, setPreference] = useState([]);
+  const [esportes, setEsportes] = useState(false);
+  const [musica, setMusica] = useState(false);
+  const [game, setGame] = useState(false);
+  const [arte, setArte] = useState(false);
+  const [design, setDesign] = useState(false);
+  const [ automobilismo, setAutomobilismo ] = useState(false);
 
     const navigation = useNavigation();
 
+    async function fetchPlaces() {
+        // const { data } = await api.get(`places?_sort=name&_order=asc&_page=${page}&_limit=8`);
+        const { data } = await herokuApi.get(`/preferences`);
+        console.log('data:' + data)
+        setPreference(data.preferencesInfo);
+
+    }
+
+    useEffect(() => {
+        fetchPlaces();
+    }, [])
+
     function handleSubmit(){
-        navigation.navigate('UserIdentification');
+        navigation.navigate('Profession');
     }
 
     return(
@@ -44,13 +58,21 @@ export function Preferences(){
                                     quais são seus gostos pessoais?  
                                 </Text>
                             </View>
+
                               <View style={styles.options}>
-                                <Check value={esportes} setValueChange={setEsportes} text="Esporte"/>
-                                <Check value={musica} setValueChange={setMusica} text="Musica"/>
-                                <Check value={game} setValueChange={setGame} text="Games"/>
-                                <Check value={arte} setValueChange={setArte} text="Arte"/>
-                                <Check value={design} setValueChange={setDesign} text="Design"/>
-                                <Check value={automobilismo} setValueChange={setAutomobilismo} text="Automobilismo"/>
+                                {/* <FlatList 
+                                  data={preference}
+                                  renderItem={({ item }) => (
+                                    <Check value={item} setValueChange={setPreference} preference={item}/>
+                                  )}
+                                  /> */}
+
+                                <Check value={esportes} setValue={setEsportes} text="Esporte"/>
+                                <Check value={musica} setValue={setMusica} text="Musica"/>
+                                <Check value={game} setValue={setGame} text="Games"/>
+                                <Check value={arte} setValue={setArte} text="Arte"/>
+                                <Check value={design} setValue={setDesign} text="Design"/>
+                                <Check value={automobilismo} setValue={setAutomobilismo} text="Automobilismo"/>
                               </View>
                             
                             <View style={styles.footer}>
@@ -76,13 +98,10 @@ const styles = StyleSheet.create({
         width: '100%'
     },
     form: {
-        flex: 1,
-        justifyContent: 'center',
-        paddingHorizontal: 54,
-        alignItems: 'center',
-    },
-    emoji: {
-        fontSize: 44
+      flex: 1,
+      justifyContent: 'center',
+      paddingHorizontal: 54,
+      alignItems: 'center',
     },
     header: {
         alignItems: 'center'

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { View, Text, SafeAreaView, StyleSheet, FlatList, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, FlatList, ActivityIndicator } from 'react-native';
 
 import { Load } from '../components/Load';
 import { Header } from '../components/Header';
@@ -12,6 +12,8 @@ import mapsApi from '../services/mapsApi';
 import { PlaceCardPrimary } from '../components/PlaceCardPrimary';
 import placeType from '../services/server.json';
 import { useNavigation } from '@react-navigation/native';
+
+import * as Location from 'expo-location'
 
 interface TypeProps {
     key: string;
@@ -34,8 +36,32 @@ export function PlaceSelect(){
     const [page, setPage] = useState(1);
     const [loadingMore, setLoadingMore] = useState(false);
     const [loadedAll, setLoadedAll] = useState(false);
+    const [latitude, setLatitude] = useState(0);
+    const [longitude, setLongitude] = useState(0);
 
     const navigation = useNavigation()
+
+    useEffect(() => {
+      async function getCoords() {
+        Location.installWebGeolocationPolyfill()
+        await navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const { latitude, longitude } = position.coords;
+    
+            setLatitude(latitude);
+            setLongitude(longitude);
+          },
+          (err) => {
+            console.log(err);
+          },
+          {
+            timeout: 30000,
+          }
+        )
+      }
+      
+      getCoords();
+    }, []);
 
     function handleEnvironmentSelected(type: string){
         setEnvironmentSelected(type);
@@ -52,7 +78,7 @@ export function PlaceSelect(){
 
     async function fetchPlaces() {
         // const { data } = await api.get(`places?_sort=name&_order=asc&_page=${page}&_limit=8`);
-        const { data } = await mapsApi.get(`/json?location=-33.8670522,151.195736&radius=1000&keyword=restaurant|bar|park|museum&key=AIzaSyC_gkGpo4lfPP7bVMqBeMfu2nB7JmRfgF0`);
+        const { data } = await mapsApi.get(`/json?location=-33.8670522,151.195736&radius=2000&keyword=restaurant|bar|park|museum&key=AIzaSyC_gkGpo4lfPP7bVMqBeMfu2nB7JmRfgF0`);
        
         if(!data.results)
             return setLoading(true);
@@ -110,7 +136,7 @@ export function PlaceSelect(){
         <View style={styles.container}>
             <View style={styles.header}>
                 <Header/>
-
+                
                 <Text style={styles.title}>
                     Que tipo de local
                 </Text>
@@ -128,37 +154,36 @@ export function PlaceSelect(){
                         title={item.title}
                         active={item.key === environmentSelected}
                         onPress={() => handleEnvironmentSelected(item.key)}
-                        
                     />
                 )}
                 horizontal
                 showsHorizontalScrollIndicator={false}
                 contentContainerStyle={styles.enviromentList}
                />
-           </View>
+            </View>
                     
             <View style={styles.places}>
-            <FlatList 
-                data={filteredPlaces}
-                keyExtractor={(item) => String(item.place_id)}
-                renderItem={({ item }) => (
-                    <PlaceCardPrimary 
-                        data={item} 
-                        onPress={() => handlePlaceSelected(item)}
+              <FlatList 
+                  data={filteredPlaces}
+                  keyExtractor={(item) => String(item.place_id)}
+                  renderItem={({ item }) => (
+                      <PlaceCardPrimary 
+                          data={item} 
+                          onPress={() => handlePlaceSelected(item)}
+                      />
+                      )}
+                      showsVerticalScrollIndicator={false}
+                      numColumns={1}   
+                      onEndReachedThreshold={0.1}                          
+                      onEndReached={({ distanceFromEnd }) => 
+                          handleFetchMore(distanceFromEnd)
+                      }
+                      ListFooterComponent={
+                          loadingMore 
+                          ? <ActivityIndicator color={colors.main} />
+                          : <></>
+                      }
                     />
-                    )}
-                    showsVerticalScrollIndicator={false}
-                    numColumns={1}   
-                    onEndReachedThreshold={0.1}                          
-                    onEndReached={({ distanceFromEnd }) => 
-                        handleFetchMore(distanceFromEnd)
-                    }
-                    ListFooterComponent={
-                        loadingMore 
-                        ? <ActivityIndicator color={colors.green} />
-                        : <></>
-                    }
-                   />
             </View>
 
         </View>
@@ -167,36 +192,36 @@ export function PlaceSelect(){
 
 const styles = StyleSheet.create({
     container: {
-            flex: 1,
-            backgroundColor: colors.background
+      flex: 1,
+      backgroundColor: colors.background
     },
     header:{
-        paddingHorizontal: 30,
+      paddingHorizontal: 30,
     },
     title: {
-        fontSize: 17,
-        fontFamily: fonts.heading,
-        color: colors.heading,
-        lineHeight: 20,
-        marginTop: 5
+      fontSize: 17,
+      fontFamily: fonts.heading,
+      color: colors.heading,
+      lineHeight: 20,
+      marginTop: 5
     },
     subtitle: {
-        fontFamily: fonts.text,
-        fontSize: 17,
-        lineHeight: 20,
-        color: colors.heading
+      fontFamily: fonts.text,
+      fontSize: 17,
+      lineHeight: 20,
+      color: colors.heading
     },
     enviromentList: {
-        height: 40,
-        justifyContent: 'center',
-        paddingBottom: 5,
-        marginLeft: 30,
-        paddingRight: 60,
-        marginVertical: 15,
+      height: 40,
+      justifyContent: 'center',
+      paddingBottom: 5,
+      marginLeft: 30,
+      paddingRight: 60,
+      marginVertical: 15,
     },
     places: {
-        flex: 1,
-        paddingHorizontal: 32,
-        justifyContent: 'center',
+      flex: 1,
+      paddingHorizontal: 32,
+      justifyContent: 'center',
     }
 });

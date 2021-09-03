@@ -56,7 +56,7 @@ export function UserIdentification(){
                               </Text>
                           </View>
 
-                          <Input placeholder="Nome de usuário" onChange={handleInputChange}/>
+                          <Input placeholder="Nome de usuário" onChange={handleInputChange} type="default"/>
                           
                           <View style={styles.footer}>
                               <Button alt={false} title="Confirmar" onPress={handleSubmit}/>

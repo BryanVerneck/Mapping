@@ -5,9 +5,10 @@ import colors from '../../styles/colors';
 interface PlaceholderProps {
   placeholder: string;
   onChange: any;
+  type: any;
 }
 
-export default function Input({ placeholder, onChange } : PlaceholderProps){
+export default function Input({ placeholder, onChange, type } : PlaceholderProps){
   const [ isFocused, setIsFocused ] = useState(false);
   const [ isFilled, setIsFilled ] = useState(false);
   const [ name, setName ] = useState<string>();
@@ -30,13 +31,13 @@ export default function Input({ placeholder, onChange } : PlaceholderProps){
     <TextInput
       style={[
           styles.input,
-          (isFocused || isFilled) && { borderColor: colors.green }
+          (isFocused || isFilled) && { borderColor: colors.main }
       ]}
       placeholder={placeholder}
       onBlur={handleInputBlur}
       onFocus={handleInputFocus}
       onChangeText={onChange}
-      keyboardType="default"
+      keyboardType={type}
       // maxLength={15}
     />
   )

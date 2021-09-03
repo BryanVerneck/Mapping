@@ -12,9 +12,13 @@ interface PlaceProps extends RectButtonProps {
         name: string;
         icon: string;
         place_id: string;
-        
+        photos: {
+          photo_reference: string;
+        };
     }
 } 
+
+// https://maps.googleapis.com/maps/api/place/photo?maxwidth=960&photoreference="+ photoRef +"&key=AIzaSyBp0cy7ti0z5MJMAwWiPMNvbJobmWYGyv4' alt=''
 
 export const PlaceCardPrimary = ({ data, ...rest} : PlaceProps) => {
     return(

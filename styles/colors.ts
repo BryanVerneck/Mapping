@@ -1,5 +1,5 @@
 export default {
-  green: '#7196e6',
+  main: '#7196e6',
   green_dark: 'black',
   green_light: '#83b8e2',
 
@@ -11,9 +11,11 @@ export default {
   shape: '#f4f4f4',
   white: '#FFFFFF',
   gray: '#CFCFCF',
+  darker_gray: '#a5a5a5',
 
   blue: '#3D7199',
   blue_light: '#EBF6FF',
 
   red: '#E83F5B',
+  black: 'black'
 };
