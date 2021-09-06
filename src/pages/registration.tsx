@@ -7,12 +7,18 @@ import { Button } from '../components/Button';
 import Input from '../components/Input';
 import DateTimePicker from '@react-native-community/datetimepicker'
 import { InputButton } from '../components/InputButton';
+import format from 'date-fns/format';
+import ptBR from 'date-fns/locale/pt-BR';
 
 export function Registration(){
   const [ email, setEmail ] = useState('');
   const [ senha, setSenha ] = useState('');
+  const [ showDate, setShowDate] = useState(false);
   const [ confirmarSenha, setConfirmarSenha ] = useState('');
-  const [ dataNascimento, setdataNascimento ] = useState(new Date());
+  const [ dataNascimento, setdataNascimento ] = useState(format(new Date(), 'dd / MMM / Y', {
+    locale: ptBR
+  }))
+  const [ data, setdata ] = useState(new Date())
   const [ check, setCheck ] = useState(false);
 
   const navigation = useNavigation();
@@ -20,26 +26,21 @@ export function Registration(){
   function handleSubmit(){
     if(!email){
       return Alert.alert('Precisamos que você preencha todos os dados 🙁')
-    }else{
+    }
+    if(senha !== confirmarSenha){
+      return Alert.alert('Sua senha e senha de confirmação precisam ser iguais 😯')
+    }
+    else{
       navigation.navigate('Preferences');
     }
   }
 
   const onChange = () => {
-    // setdataNascimento();
+    setShowDate(!showDate)
   };
 
   function showDatePicker(){
-    return(
-      <DateTimePicker
-          testID="dateTimePicker"
-          value={dataNascimento}
-          mode="date"
-          is24Hour={true}
-          display="default"
-          onChange={onChange}
-        />
-    )
+    setShowDate(!showDate);
   }
 
   return(
@@ -56,13 +57,23 @@ export function Registration(){
                 </Text>
               </View>
               <Input placeholder="E-mail" type="email-address" onChange={(value: string) => setEmail(value)}/>
-              <Input placeholder="Senha" type="visible-password" onChange={(value: string) => setEmail(value)}/>
-              <Input placeholder="Confirmar senha" type="visible-password" onChange={(value: string) => setEmail(value)}/>
+              <Input placeholder="Senha" type="visible-password" onChange={(value: string) => setSenha(value)}/>
+              <Input placeholder="Confirmar senha" type="visible-password" onChange={(value: string) => setConfirmarSenha(value)}/>
               <Input placeholder="Sexo" type="default" onChange={(value: string) => setEmail(value)}/>
               <InputButton
-                title="Data de nascimento"
+                title={"Data de nascimento: " + dataNascimento}
                 onPress={showDatePicker}
                 />
+              {showDate && (
+                <DateTimePicker
+                  testID="dateTimePicker"
+                  value={data}
+                  mode="date"
+                  is24Hour={true}
+                  display="default"
+                  onChange={onChange}
+                />
+              )}
               <View style={styles.loginButton}>
                 <Button
                 title="Confirmar"

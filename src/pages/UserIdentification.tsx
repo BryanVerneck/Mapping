@@ -27,15 +27,39 @@ export function UserIdentification(){
     }
 
     await AsyncStorage.setItem('@mapping:user', name);
+
+    // try {
+    //   await fetch('http://', {
+    //     method: 'post',
+    //     mode: 'no-cors',
+    //     headers: {
+    //       'Accept': 'application/json',
+    //       'Content-type': 'application/json'
+    //     },
+    //     body: JSON.stringify({
+    //       nome: "Bryan",
+    //       senha: "12345678",
+    //       senha_confirma: "12345678",
+    //       email: 'bryanverneck@gmail.com',
+    //       data_nascimento: '01/02/2000',
+    //       sexo: 'M',
+    //       id_profissão: 1,
+    //       gostos_pessoais: [
+    //         1
+    //       ]
+    //     })
+    //   })
+    // } catch(e) {
+    //   console.log(e);
+    // }
     
     navigation.navigate('PlaceSelect');
-    // navigation.navigate('Confirmation');
-
+  // navigation.navigate('Confirmation');
+  
   }
-
   function handleInputChange(value: string){
     setName(value);
-}
+  }
 
   return(
       <SafeAreaView style={styles.container}>
