@@ -24,9 +24,9 @@ export function Registration(){
   const navigation = useNavigation();
 
   function handleSubmit(){
-    if(!email){
-      return Alert.alert('Precisamos que você preencha todos os dados 🙁')
-    }
+    // if(!email){
+    //   return Alert.alert('Precisamos que você preencha todos os dados 🙁')
+    // }
     if(senha !== confirmarSenha){
       return Alert.alert('Sua senha e senha de confirmação precisam ser iguais 😯')
     }
@@ -34,10 +34,6 @@ export function Registration(){
       navigation.navigate('Preferences');
     }
   }
-
-  const onChange = () => {
-    setShowDate(!showDate)
-  };
 
   function showDatePicker(){
     setShowDate(!showDate);
@@ -71,7 +67,14 @@ export function Registration(){
                   mode="date"
                   is24Hour={true}
                   display="default"
-                  onChange={onChange}
+                  onChange={(e, date) => {
+                    setShowDate(!showDate);
+                    if (date) {
+                      setdata(date);
+                      const temp = date.toString();
+                      setdataNascimento(temp.slice(8, 10) + '/' + temp.slice(4, 7) + '/' + temp.slice(11, 16))
+                    }
+                 }}
                 />
               )}
               <View style={styles.loginButton}>

@@ -15,6 +15,8 @@ import colors from '../../styles/colors';
 import fonts from '../../styles/fonts';
 import { useNavigation } from '@react-navigation/core';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import herokuApi from '../services/HerokuAPI';
+import herokuApiSauce from '../services/HerokuAPISauce';
 
 export function UserIdentification(){
   const [ name, setName ] = useState('');
@@ -28,8 +30,35 @@ export function UserIdentification(){
 
     await AsyncStorage.setItem('@mapping:user', name);
 
-    // try {
-    //   await fetch('http://', {
+    await herokuApiSauce.post('/user/addUser', {
+      nome: "Bryan",
+      senha: "12345678",
+      senha_confirma: "12345678",
+      email: 'bryanvck@gmail.com',
+      data_nascimento: '2000-01-01',
+      sexo: 'M',
+      id_profissao: "1",
+      gostos_pessoais: [
+        "1", "3", "4"
+      ]
+    }).then(response => console.log(response));
+
+    // const data = await herokuApi.post('/user/addUser', {
+    //   nome: "Bryan",
+    //   senha: "12345678",
+    //   senha_confirma: "12345678",
+    //   email: 'bryanvck@gmail.com',
+    //   data_nascimento: '2000-01-01',
+    //   sexo: 'M',
+    //   id_profissao: "1",
+    //   gostos_pessoais: [
+    //     "1", "3", "4"
+    //   ]
+    // })
+
+    // console.log(data);
+    
+    //   await fetch('https://api-mapping.herokuapp.com/user/addUser', {
     //     method: 'post',
     //     mode: 'no-cors',
     //     headers: {
@@ -40,12 +69,12 @@ export function UserIdentification(){
     //       nome: "Bryan",
     //       senha: "12345678",
     //       senha_confirma: "12345678",
-    //       email: 'bryanverneck@gmail.com',
-    //       data_nascimento: '01/02/2000',
+    //       email: 'bryanvck@gmail.com',
+    //       data_nascimento: '2000-01-01',
     //       sexo: 'M',
-    //       id_profissão: 1,
+    //       id_profissão: "1",
     //       gostos_pessoais: [
-    //         1
+    //         "1", "3", "4"
     //       ]
     //     })
     //   })
@@ -55,8 +84,8 @@ export function UserIdentification(){
     
     navigation.navigate('PlaceSelect');
   // navigation.navigate('Confirmation');
-  
   }
+
   function handleInputChange(value: string){
     setName(value);
   }
