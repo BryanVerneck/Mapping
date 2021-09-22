@@ -10,6 +10,7 @@ import { ProfessionsCard } from '../components/professionsCard';
 import { Button } from '../components/Button';
 import fonts from '../../styles/fonts';
 import { Load } from '../components/Load';
+import { Check } from '../components/Check';
 
 interface ProfessionProps {
   id: string
@@ -19,6 +20,7 @@ interface ProfessionProps {
 export function Profession(){
     const [loading, setLoading] = useState(true);
     const [professions, setProfessions] = useState<ProfessionProps[]>([]);
+    const [ check, setCheck ] = useState(false);
 
     const [professionSelected, setProfessionSelected] = useState<ProfessionProps>();
     
@@ -40,8 +42,9 @@ export function Profession(){
       navigation.navigate('UserIdentification');
     }
 
-    function changeProfession(item: ProfessionProps){
+    function professionSelect(item: ProfessionProps){
       setProfessionSelected(item);
+      console.log("profession: "+ professionSelected);
     }
 
     useEffect(() => {
@@ -70,7 +73,7 @@ export function Profession(){
                 data={professions}
                 keyExtractor={(item) => String(item.id)}
                 renderItem={({ item }) => (
-                    <ProfessionsCard data={item} onPress={() => changeProfession(item)}/>
+                    <ProfessionsCard data={item} onPress={() => professionSelect(item)}/>
                     )}
                     showsVerticalScrollIndicator={false}
                     numColumns={1}   

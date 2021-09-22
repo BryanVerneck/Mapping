@@ -20,11 +20,12 @@ export const ProfessionsCard = ({ data, ...rest} : ProfessionProps) => {
   
   function handleProfessionSelect(){
     setCheck(!check);
+    console.log("profesion id: " + data.id);
   }
 
   return(
       <RectButton style={[
-        styles.container, (check) && { backgroundColor: colors.main, }]} {...rest} onPress={() => handleProfessionSelect()}>
+        styles.container, (check) && { backgroundColor: colors.main, }]} {...rest} onPress={handleProfessionSelect}>
           <Text style={styles.text}>
               {data.descricao}
           </Text>

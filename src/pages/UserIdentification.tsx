@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { SafeAreaView, 
     StyleSheet, 
     View, 
@@ -15,16 +15,19 @@ import colors from '../../styles/colors';
 import fonts from '../../styles/fonts';
 import { useNavigation } from '@react-navigation/core';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import herokuApi from '../services/HerokuAPI';
 import herokuApiSauce from '../services/HerokuAPISauce';
+import { UserData } from './Registration';
 
 export function UserIdentification(){
+  const { email, senha, confirmarSenha, dataNascimento, sexo } = useContext(UserData);
+
   const [ name, setName ] = useState('');
 
   const navigation = useNavigation();
 
   async function handleSubmit(){
     if(!name){
+      console.log("email:" + email);
       return Alert.alert('Me diz como chamar você 😥')
     }
 
@@ -34,7 +37,7 @@ export function UserIdentification(){
       nome: "Bryan",
       senha: "12345678",
       senha_confirma: "12345678",
-      email: 'bryanvck@gmail.com',
+      email: "bryanverneck@gmail.com",
       data_nascimento: '2000-01-01',
       sexo: 'M',
       id_profissao: "1",

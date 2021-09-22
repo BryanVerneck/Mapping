@@ -52,6 +52,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginTop: 50,
     padding: 10,
-    textAlign: 'center'
+    textAlign: 'center',
   },
 })

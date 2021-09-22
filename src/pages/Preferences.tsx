@@ -16,6 +16,10 @@ import { Check } from '../components/Check';
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import herokuApi from '../services/HerokuAPI';
 
+interface PreferenceProps {
+
+}
+
 export function Preferences(){
   const [preference, setPreference] = useState([]);
   const [esportes, setEsportes] = useState(false);
@@ -44,45 +48,44 @@ export function Preferences(){
     }
 
     return(
-        <SafeAreaView style={styles.container}>
-            <KeyboardAvoidingView 
-                style={styles.container}
-                behavior={ Platform.OS === 'ios' ? 'padding' : 'height'}>
-    
-                <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                    <View style={styles.content}>
-                        <View style={styles.form}>
-                            <View style={styles.header}>
-                                <Text style={styles.title}>
-                                    Para realizarmos { '\n'} algumas indicações, 
-                                    quais são seus gostos pessoais?  
-                                </Text>
-                            </View>
+      <SafeAreaView style={styles.container}>
+        <KeyboardAvoidingView 
+          style={styles.container}
+          behavior={ Platform.OS === 'ios' ? 'padding' : 'height'}>
 
-                              <View style={styles.options}>
-                                {/* <FlatList 
-                                  data={preference}
-                                  renderItem={({ item }) => (
-                                    <Check value={item} setValueChange={setPreference} preference={item}/>
-                                  )}
-                                  /> */}
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View style={styles.content}>
+            <View style={styles.form}>
+              <View style={styles.header}>
+                <Text style={styles.title}>
+                  Para realizarmos { '\n'} algumas indicações, 
+                  quais são seus gostos pessoais?  
+                </Text>
+              </View>
 
-                                <Check value={esportes} setValue={setEsportes} text="Esporte"/>
-                                <Check value={musica} setValue={setMusica} text="Musica"/>
-                                <Check value={game} setValue={setGame} text="Games"/>
-                                <Check value={arte} setValue={setArte} text="Arte"/>
-                                <Check value={design} setValue={setDesign} text="Design"/>
-                                <Check value={automobilismo} setValue={setAutomobilismo} text="Automobilismo"/>
-                              </View>
-                            
-                            <View style={styles.footer}>
-                                <Button title="Confirmar" alt={false} onPress={handleSubmit}/>
-                            </View>   
-                        </View>
-                    </View>
-                </TouchableWithoutFeedback>
-            </KeyboardAvoidingView>
-        </SafeAreaView>
+              {/* <View style={styles.options}>
+                <FlatList 
+                  data={preference}
+                  renderItem={({ item }) => (
+                    <Check value={item} setValue={setPreference} text={item}/>
+                  )}
+                  /> */}
+
+              <Check value={esportes} setValue={setEsportes} text="Esporte" />
+              <Check value={musica} setValue={setMusica} text="Musica"/>
+              <Check value={game} setValue={setGame} text="Games"/>
+              <Check value={arte} setValue={setArte} text="Arte"/>
+              <Check value={design} setValue={setDesign} text="Design"/>
+              <Check value={automobilismo} setValue={setAutomobilismo} text="Automobilismo"/>
+            </View>
+                  
+            <View style={styles.footer}>
+                <Button title="Confirmar" alt={false} onPress={handleSubmit}/>
+            </View>   
+          </View>
+          </TouchableWithoutFeedback>
+        </KeyboardAvoidingView>
+      </SafeAreaView>
     )
 }
 
