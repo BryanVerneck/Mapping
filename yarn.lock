@@ -4759,7 +4759,7 @@ lodash.throttle@^4.1.1:
   resolved "https://registry.yarnpkg.com/lodash.throttle/-/lodash.throttle-4.1.1.tgz#c23e91b710242ac70c37f1e1cda9274cc39bf2f4"
   integrity sha1-wj6RtxAkKscMN/HhzaknTMOb8vQ=
 
-lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.17.21, lodash@^4.3.0:
+lodash@4.17.21, lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.17.21, lodash@^4.3.0:
   version "4.17.21"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
   integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
@@ -5880,6 +5880,13 @@ react-native-multiple-select@^0.5.6:
   integrity sha512-I6H7dcVZLy2ToyJ9mv0ANIDnBIcrUfVyEN3jCgPNG8sLyK6JMMNgJwqlJxrlPOaJVjiDjHkF0viu6LjohQFhhQ==
   dependencies:
     prop-types "^15.7.2"
+
+react-native-radio-buttons-group@^2.2.5:
+  version "2.2.5"
+  resolved "https://registry.yarnpkg.com/react-native-radio-buttons-group/-/react-native-radio-buttons-group-2.2.5.tgz#0c22f8da508c432f5a67098266f47e021de22932"
+  integrity sha512-9uS4PPwRVzDUEnaRd1EyZJGf9EKDuncu7BhoyuLNWlVexWo7HfZ+tJz8fAKgkxk/d5AVnfNBqMx2mljxNKUXUw==
+  dependencies:
+    lodash "4.17.21"
 
 react-native-reanimated@~2.1.0:
   version "2.1.0"
