@@ -16,16 +16,9 @@ interface ProfessionProps extends RectButtonProps {
 // https://maps.googleapis.com/maps/api/place/photo?maxwidth=960&photoreference="+ photoRef +"&key=AIzaSyBp0cy7ti0z5MJMAwWiPMNvbJobmWYGyv4' alt=''
 
 export const ProfessionsCard = ({ data, ...rest} : ProfessionProps) => {
-  const [ check, setCheck ] = useState(false);
-  
-  function handleProfessionSelect(){
-    setCheck(!check);
-    console.log("profesion id: " + data.id);
-  }
 
   return(
-      <RectButton style={[
-        styles.container, (check) && { backgroundColor: colors.main, }]} {...rest} onPress={handleProfessionSelect}>
+      <RectButton {...rest}>
           <Text style={styles.text}>
               {data.descricao}
           </Text>

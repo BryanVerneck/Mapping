@@ -3,7 +3,6 @@ import { TouchableOpacity, Text, StyleSheet, TouchableOpacityProps } from 'react
 
 import colors from '../../styles/colors';
 
-import color from '../../styles/colors';
 import fonts from '../../styles/fonts';
 
 interface ButtonProps extends TouchableOpacityProps {
@@ -39,7 +38,7 @@ const styles = StyleSheet.create({
     },
     text: {
         fontSize: 16,
-        color: colors.darker_gray,
+        color: colors.black,
         fontFamily: fonts.complement
     },
 })

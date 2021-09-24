@@ -72,7 +72,7 @@ export function Registration(){
               <Input placeholder="Senha" type="visible-password" onChange={(value: string) => setSenha(value)}/>
               <Input placeholder="Confirmar senha" type="visible-password" onChange={(value: string) => setConfirmarSenha(value)}/>
               <View style={styles.genderContainer}>
-                <Picker style={{width: '70%', height: 50, color: colors.darker_gray, borderBottomWidth: 1, borderBottomColor: colors.heading, marginTop: 50, alignItems: 'center'}}
+                <Picker style={{width: '70%', height: 50, color: colors.heading, marginTop: 50}}
                   selectedValue={sexo}
                   onValueChange={(item)=>{setSexo(item)}}
                 >
@@ -161,13 +161,4 @@ loginButton: {
     width: '100%',
     paddingHorizontal: 20  
 },
-dateButton: {
-    borderBottomWidth: 1,
-    borderColor: colors.gray,
-    width: '100%',
-    marginTop: 50,
-    padding: 10,
-    color: 'black',
-    fontSize: 20
-}
 })

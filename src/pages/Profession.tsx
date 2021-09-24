@@ -20,9 +20,9 @@ interface ProfessionProps {
 export function Profession(){
     const [loading, setLoading] = useState(true);
     const [professions, setProfessions] = useState<ProfessionProps[]>([]);
-    const [ check, setCheck ] = useState(false);
 
     const [professionSelected, setProfessionSelected] = useState<ProfessionProps>();
+    const [professionIdSelected, setProfessionIdSelected] = useState('');
     
     const navigation = useNavigation()
 
@@ -55,6 +55,12 @@ export function Profession(){
       return <Load />
     }
 
+    function handleProfessionSelected(item: ProfessionProps){
+      console.log(professionIdSelected)
+      professionSelect(item)
+      setProfessionIdSelected(item.id)
+    }
+
     return(
       <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView 
@@ -73,8 +79,9 @@ export function Profession(){
                 data={professions}
                 keyExtractor={(item) => String(item.id)}
                 renderItem={({ item }) => (
-                    <ProfessionsCard data={item} onPress={() => professionSelect(item)}/>
-                    )}
+                    <ProfessionsCard data={item} onPress={() => handleProfessionSelected(item)} style={ 
+                      professionIdSelected === item.id ? styles.professionSelected : styles.professionsContainer } />
+                  )}
                     showsVerticalScrollIndicator={false}
                     numColumns={1}   
                     onEndReachedThreshold={0.1}                          
@@ -158,4 +165,26 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: 20
   },
+  professionsContainer: {
+    flexDirection: 'row',
+    maxWidth: '100%',
+    backgroundColor: colors.shape,
+    borderRadius: 5,
+    paddingVertical: 10,
+    alignItems: 'flex-start',
+    paddingHorizontal: 10,
+    margin: 5,
+    borderWidth: 1
+  },
+  professionSelected: {
+    flexDirection: 'row',
+    maxWidth: '100%',
+    backgroundColor: colors.main,
+    borderRadius: 5,
+    paddingVertical: 10,
+    alignItems: 'flex-start',
+    paddingHorizontal: 10,
+    margin: 5,
+    borderWidth: 1
+  }
 });
