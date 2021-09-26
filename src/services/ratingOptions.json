@@ -7,9 +7,12 @@
     "text": "Boa"
   },{
     "value": "3",
-    "text": "Ruim"
+    "text": "Razoável"
   },{
     "value": "4",
+    "text": "Ruim"
+  },{
+    "value": "5",
     "text": "Muito ruim"
   }]
 }
