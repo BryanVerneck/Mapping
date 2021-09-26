@@ -33,7 +33,6 @@ export function Registration(){
   }))
   const [ newDate, setNewDate ] = useState('')
   const [ data, setData ] = useState(new Date())
-  const [ check, setCheck ] = useState(false);
 
   const navigation = useNavigation();
 
