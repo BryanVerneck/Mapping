@@ -1,15 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { TouchableOpacity, Text, StyleSheet, TouchableOpacityProps } from 'react-native';
 
 import colors from '../../styles/colors';
-
 import fonts from '../../styles/fonts';
 
 interface ButtonProps extends TouchableOpacityProps {
     title: string;
 }
 
-export function InputButton({ title, ...rest } : ButtonProps){
+export function RatingButton({ title, ...rest } : ButtonProps){
 
   return(
     <>
@@ -24,21 +23,17 @@ export function InputButton({ title, ...rest } : ButtonProps){
 
 const styles = StyleSheet.create({
     container: {
-      height: 56,
-      borderRadius: 10,
-      justifyContent: 'center',
-      alignItems: 'center',
-      borderBottomWidth: 1,
-      borderColor: colors.gray,
-      width: '100%',
-      fontSize: 18,
-      marginTop: 50,
-      padding: 10,
-      textAlign: 'center'
+        backgroundColor: colors.main,
+        height: 56,
+        borderTopEndRadius: 100,
+        borderTopStartRadius: 100,
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '80%',
     },
     text: {
         fontSize: 16,
-        color: colors.black,
-        fontFamily: fonts.complement
-    },
+        color: colors.white,
+        fontFamily: fonts.heading
+    }
 })

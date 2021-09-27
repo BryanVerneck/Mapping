@@ -3,3 +3,7 @@
 
 <!-- Define ACCESS_COARSE_LOCATION if you will use enableHighAccuracy=false  -->
 <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+
+<meta-data
+  android:name="com.google.android.geo.AIzaSyC_gkGpo4lfPP7bVMqBeMfu2nB7JmRfgF0"
+  android:value="AIzaSyC_gkGpo4lfPP7bVMqBeMfu2nB7JmRfgF0"/>

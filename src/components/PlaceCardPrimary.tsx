@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
         maxWidth: '100%',
         backgroundColor: colors.shape,
         borderRadius: 5,
-        paddingVertical: 10,
+        paddingVertical: 15,
         alignItems: 'flex-start',
         paddingHorizontal: 10,
         margin: 5

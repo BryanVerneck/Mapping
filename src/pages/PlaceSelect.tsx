@@ -104,6 +104,7 @@ export function PlaceSelect(){
 
     function handlePlaceSelected(place: PlaceProps){
       navigation.navigate('PlaceDetail', {place});
+      console.log("place:" + place.place_id)
     }
 
     useEffect(() => {

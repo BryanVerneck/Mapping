@@ -8,7 +8,6 @@ import LottieView from 'lottie-react-native';
 import SearchingAnimation from '../assets/searchingData.json';
 
 export function Welcome(){
-  //oi
 
     const navigation = useNavigation();
     

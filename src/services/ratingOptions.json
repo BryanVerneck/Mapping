@@ -1,0 +1,22 @@
+{
+  "options" : [{
+  "value": "1",
+  "text": "Excelente"
+  },{
+    "value": "2",
+    "text": "Boa"
+  },{
+    "value": "3",
+    "text": "Razoável"
+  },{
+    "value": "4",
+    "text": "Ruim"
+  },{
+    "value": "5",
+    "text": "Muito ruim"
+  }]
+}
+
+  
+
+

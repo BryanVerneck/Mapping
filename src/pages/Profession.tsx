@@ -10,6 +10,7 @@ import { ProfessionsCard } from '../components/professionsCard';
 import { Button } from '../components/Button';
 import fonts from '../../styles/fonts';
 import { Load } from '../components/Load';
+import { Check } from '../components/Check';
 
 interface ProfessionProps {
   id: string
@@ -21,6 +22,7 @@ export function Profession(){
     const [professions, setProfessions] = useState<ProfessionProps[]>([]);
 
     const [professionSelected, setProfessionSelected] = useState<ProfessionProps>();
+    const [professionIdSelected, setProfessionIdSelected] = useState('');
     
     const navigation = useNavigation()
 
@@ -40,8 +42,9 @@ export function Profession(){
       navigation.navigate('UserIdentification');
     }
 
-    function changeProfession(item: ProfessionProps){
+    function professionSelect(item: ProfessionProps){
       setProfessionSelected(item);
+      console.log("profession: "+ professionSelected);
     }
 
     useEffect(() => {
@@ -50,6 +53,12 @@ export function Profession(){
 
     if(loading){
       return <Load />
+    }
+
+    function handleProfessionSelected(item: ProfessionProps){
+      console.log(professionIdSelected)
+      professionSelect(item)
+      setProfessionIdSelected(item.id)
     }
 
     return(
@@ -70,8 +79,9 @@ export function Profession(){
                 data={professions}
                 keyExtractor={(item) => String(item.id)}
                 renderItem={({ item }) => (
-                    <ProfessionsCard data={item} onPress={() => changeProfession(item)}/>
-                    )}
+                    <ProfessionsCard data={item} onPress={() => handleProfessionSelected(item)} style={ 
+                      professionIdSelected === item.id ? styles.professionSelected : styles.professionsContainer } />
+                  )}
                     showsVerticalScrollIndicator={false}
                     numColumns={1}   
                     onEndReachedThreshold={0.1}                          
@@ -79,7 +89,8 @@ export function Profession(){
               </View>
               
               <View style={styles.footer}>
-                <Button alt={false} title="Confirmar" onPress={handleSubmit}/>
+                {professionSelected ? <Button alt={false} title="Confirmar" onPress={handleSubmit}/> : <Button alt={false} title="Confirmar" onPress={handleSubmit} disabled style={styles.buttonDisabled}/>}
+                
               </View>
               </View>
           </View>
@@ -155,4 +166,33 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: 20
   },
+  professionsContainer: {
+    flexDirection: 'row',
+    maxWidth: '100%',
+    backgroundColor: colors.shape,
+    borderRadius: 5,
+    paddingVertical: 10,
+    alignItems: 'flex-start',
+    paddingHorizontal: 10,
+    margin: 5,
+    borderWidth: 1
+  },
+  professionSelected: {
+    flexDirection: 'row',
+    maxWidth: '100%',
+    backgroundColor: colors.main,
+    borderRadius: 5,
+    paddingVertical: 10,
+    alignItems: 'flex-start',
+    paddingHorizontal: 10,
+    margin: 5,
+    borderWidth: 1
+  },
+  buttonDisabled: {
+    backgroundColor: colors.gray,
+    height: 56,
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center'
+  }
 });

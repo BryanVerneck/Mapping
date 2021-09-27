@@ -13,11 +13,12 @@ type Values = {
 export function Check({value, setValue, text}: Values){
   return(
     <View style={styles.container}>
-      <CheckBox value={value}
-          onValueChange={(newValue) => setValue(newValue)}
-          style={styles.checkbox}
-          tintColors={{ true: colors.main, false: colors.black}}
-          />
+      <CheckBox 
+        value={value}
+        onValueChange={(newValue) => setValue(newValue)}
+        style={styles.checkbox}
+        tintColors={{ true: colors.main, false: colors.black}}
+        />
         <View style={styles.preferences}>
           <Text style={styles.label}>{text}</Text>
         </View>

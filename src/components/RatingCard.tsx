@@ -1,4 +1,4 @@
-import React, { useState } from  'react';
+import React from 'react';
 
 import { StyleSheet, Text } from 'react-native';
 
@@ -6,36 +6,33 @@ import { RectButton, RectButtonProps } from 'react-native-gesture-handler';
 import colors from '../../styles/colors';
 import fonts from '../../styles/fonts';
 
-interface ProfessionProps extends RectButtonProps {
-    data: { 
-      id: string
-      descricao: string
-    }
-} 
+interface RateProps extends RectButtonProps {
+  options: {
+    text: string
+  }
+}
 
-// https://maps.googleapis.com/maps/api/place/photo?maxwidth=960&photoreference="+ photoRef +"&key=AIzaSyBp0cy7ti0z5MJMAwWiPMNvbJobmWYGyv4' alt=''
-
-export const ProfessionsCard = ({ data, ...rest} : ProfessionProps) => {
-
+export function RatingCard ( {options, ...rest}: RateProps) {
+    
   return(
-      <RectButton {...rest}>
-          <Text style={styles.text}>
-              {data.descricao}
-          </Text>
-      </RectButton>
+    <RectButton {...rest}>
+      <Text style={styles.text}>
+        {options.text}
+      </Text>
+    </RectButton>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    maxWidth: '100%',
+    width: 200,
     backgroundColor: colors.shape,
     borderRadius: 5,
     paddingVertical: 10,
-    alignItems: 'flex-start',
+    alignItems: 'center',
     paddingHorizontal: 10,
-    margin: 5,
+    marginBottom: 10,
     borderWidth: 1
   },
   text: {

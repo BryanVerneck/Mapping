@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React, { createContext, useState } from 'react';
 import { SafeAreaView, View, StyleSheet, Text, Alert, KeyboardAvoidingView, Platform, Keyboard, TouchableWithoutFeedback} from 'react-native';
 import colors from '../../styles/colors';
 import fonts from '../../styles/fonts';
@@ -9,17 +9,30 @@ import DateTimePicker from '@react-native-community/datetimepicker'
 import { InputButton } from '../components/InputButton';
 import format from 'date-fns/format';
 import ptBR from 'date-fns/locale/pt-BR';
+import { Picker } from '@react-native-picker/picker';
+import { setDate } from 'date-fns';
+
+interface userData {
+  email: string;
+  senha: string;
+  confirmarSenha: string;
+  sexo: string;
+  dataNascimento: string;
+}
+
+export const UserData = createContext({} as userData);
 
 export function Registration(){
   const [ email, setEmail ] = useState('');
   const [ senha, setSenha ] = useState('');
+  const [ sexo, setSexo ] = useState('M');
   const [ showDate, setShowDate] = useState(false);
   const [ confirmarSenha, setConfirmarSenha ] = useState('');
   const [ dataNascimento, setdataNascimento ] = useState(format(new Date(), 'dd / MMM / Y', {
     locale: ptBR
   }))
-  const [ data, setdata ] = useState(new Date())
-  const [ check, setCheck ] = useState(false);
+  const [ newDate, setNewDate ] = useState('')
+  const [ data, setData ] = useState(new Date())
 
   const navigation = useNavigation();
 
@@ -27,6 +40,7 @@ export function Registration(){
     // if(!email){
     //   return Alert.alert('Precisamos que você preencha todos os dados 🙁')
     // }
+    // console.log(email);
     if(senha !== confirmarSenha){
       return Alert.alert('Sua senha e senha de confirmação precisam ser iguais 😯')
     }
@@ -40,7 +54,8 @@ export function Registration(){
   }
 
   return(
-    <SafeAreaView style={styles.container}>
+    <UserData.Provider value={{ email, senha, confirmarSenha, sexo, dataNascimento }}>
+      <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView 
                 style={styles.container}
                 behavior={ Platform.OS === 'ios' ? 'padding' : 'height'}>
@@ -55,7 +70,15 @@ export function Registration(){
               <Input placeholder="E-mail" type="email-address" onChange={(value: string) => setEmail(value)}/>
               <Input placeholder="Senha" type="visible-password" onChange={(value: string) => setSenha(value)}/>
               <Input placeholder="Confirmar senha" type="visible-password" onChange={(value: string) => setConfirmarSenha(value)}/>
-              <Input placeholder="Sexo" type="default" onChange={(value: string) => setEmail(value)}/>
+              <View style={styles.genderContainer}>
+                <Picker style={{width: '70%', height: 50, color: colors.heading, marginTop: 50}}
+                  selectedValue={sexo}
+                  onValueChange={(item)=>{setSexo(item)}}
+                >
+                  <Picker.Item key={0} value="M" label="Sexo masculino"/>
+                  <Picker.Item key={1} value="F" label="Sexo feminino"/>
+                </Picker>
+              </View>
               <InputButton
                 title={"Data de nascimento: " + dataNascimento}
                 onPress={showDatePicker}
@@ -70,25 +93,26 @@ export function Registration(){
                   onChange={(e, date) => {
                     setShowDate(!showDate);
                     if (date) {
-                      setdata(date);
                       const temp = date.toString();
                       setdataNascimento(temp.slice(8, 10) + '/' + temp.slice(4, 7) + '/' + temp.slice(11, 16))
+                      setNewDate(date.getFullYear() + '-' + date.getMonth().toString().padStart(2, '0') + '-' + date.getDate().toString().padStart(2, '0'))
                     }
                  }}
                 />
               )}
+
               <View style={styles.loginButton}>
-                <Button
-                title="Confirmar"
-                alt = {false}
-                onPress={handleSubmit}
-                />
+                {email && senha && confirmarSenha && dataNascimento && sexo ? 
+                <Button title="Confirmar" alt = {false} onPress={handleSubmit} /> 
+                : 
+                <Button title="Confirmar" alt = {false} disabled style={styles.buttonDisabled} />}
               </View>
             </View>
           </View>
         </TouchableWithoutFeedback>
       </KeyboardAvoidingView>
     </SafeAreaView>
+    </UserData.Provider>
   )
 }
 
@@ -98,11 +122,18 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     justifyContent: 'space-around',
-},
-content: {
+  },
+  genderContainer: {
+    width: '95%',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    borderBottomWidth: 1,
+    borderBottomColor: colors.gray
+  },
+  content: {
     flex: 1,
     width: '100%'
-},
+  },
 form: {
     flex: 1,
     justifyContent: 'center',
@@ -128,13 +159,11 @@ loginButton: {
     width: '100%',
     paddingHorizontal: 20  
 },
-dateButton: {
-    borderBottomWidth: 1,
-    borderColor: colors.gray,
-    width: '100%',
-    marginTop: 50,
-    padding: 10,
-    color: 'black',
-    fontSize: 20
+buttonDisabled: {
+  backgroundColor: colors.gray,
+  height: 56,
+  borderRadius: 10,
+  justifyContent: 'center',
+  alignItems: 'center'
 }
 })
