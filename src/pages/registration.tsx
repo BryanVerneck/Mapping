@@ -102,11 +102,10 @@ export function Registration(){
               )}
 
               <View style={styles.loginButton}>
-                <Button
-                title="Confirmar"
-                alt = {false}
-                onPress={handleSubmit}
-                />
+                {email && senha && confirmarSenha && dataNascimento && sexo ? 
+                <Button title="Confirmar" alt = {false} onPress={handleSubmit} /> 
+                : 
+                <Button title="Confirmar" alt = {false} disabled style={styles.buttonDisabled} />}
               </View>
             </View>
           </View>
@@ -160,4 +159,11 @@ loginButton: {
     width: '100%',
     paddingHorizontal: 20  
 },
+buttonDisabled: {
+  backgroundColor: colors.gray,
+  height: 56,
+  borderRadius: 10,
+  justifyContent: 'center',
+  alignItems: 'center'
+}
 })

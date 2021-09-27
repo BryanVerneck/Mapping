@@ -89,7 +89,8 @@ export function Profession(){
               </View>
               
               <View style={styles.footer}>
-                <Button alt={false} title="Confirmar" onPress={handleSubmit}/>
+                {professionSelected ? <Button alt={false} title="Confirmar" onPress={handleSubmit}/> : <Button alt={false} title="Confirmar" onPress={handleSubmit} disabled style={styles.buttonDisabled}/>}
+                
               </View>
               </View>
           </View>
@@ -186,5 +187,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     margin: 5,
     borderWidth: 1
+  },
+  buttonDisabled: {
+    backgroundColor: colors.gray,
+    height: 56,
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 });

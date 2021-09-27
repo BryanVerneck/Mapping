@@ -63,5 +63,5 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: colors.main,
         fontFamily: fonts.heading
-    }
+    },
 })

@@ -44,7 +44,7 @@ export function UserIdentification(){
       gostos_pessoais: [
         "1", "3", "4"
       ]
-    }).then(response => console.log(response));
+    }).then(response => console.log(response)).catch(e => console.log(e.data.message));
 
     // const data = await herokuApi.post('/user/addUser', {
     //   nome: "Bryan",
@@ -115,9 +115,8 @@ export function UserIdentification(){
                           <Input placeholder="Nome de usuário" onChange={handleInputChange} type="default"/>
                           
                           <View style={styles.footer}>
-                              <Button alt={false} title="Confirmar" onPress={handleSubmit}/>
+                              {name ? <Button alt={false} title="Confirmar" onPress={handleSubmit}/> : <Button alt={false} title="Confirmar" disabled style={styles.buttonDisabled}/>}
                           </View>
-                      
                       </View>
                   </View>
               </TouchableWithoutFeedback>
@@ -161,5 +160,12 @@ const styles = StyleSheet.create({
         marginTop: 40,
         width: '100%',
         paddingHorizontal: 20  
+    },
+    buttonDisabled: {
+      backgroundColor: colors.gray,
+      height: 56,
+      borderRadius: 10,
+      justifyContent: 'center',
+      alignItems: 'center'
     }
 });
