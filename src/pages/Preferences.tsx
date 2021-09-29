@@ -1,149 +1,238 @@
 import React, { useEffect, useState } from 'react';
-import {  SafeAreaView, 
+import { 
     StyleSheet, 
     View, 
-    Text, 
-    KeyboardAvoidingView, 
-    Platform, 
-    TouchableWithoutFeedback,
-    Keyboard, 
+    Text,
+    LogBox, 
     } from 'react-native';
 import { Button } from '../components/Button';
 import colors from '../../styles/colors';
 import { useNavigation } from '@react-navigation/core';
 import fonts from '../../styles/fonts';
-import { Check } from '../components/Check';
-import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
+import { FlatList, ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import herokuApi from '../services/HerokuAPI';
+import { PreferencesCard } from '../components/PreferencesCard';
+import { Load } from '../components/Load';
 
 interface PreferenceProps {
-
+  id: string;
+  descricao: string;
+  id_categoria: string;
 }
 
 export function Preferences(){
   const [preference, setPreference] = useState([]);
-  const [esportes, setEsportes] = useState(false);
-  const [musica, setMusica] = useState(false);
-  const [game, setGame] = useState(false);
-  const [arte, setArte] = useState(false);
-  const [design, setDesign] = useState(false);
-  const [ automobilismo, setAutomobilismo ] = useState(false);
+  const [preferenceSelected, setPreferenceSelected] = useState(['']);
+  const [loading, setLoading] = useState(true);
+  const [filter1, setFilter1] = useState([]);
+  const [filter2, setFilter2] = useState([]);
+  const [filter3, setFilter3] = useState([]);
 
-    const navigation = useNavigation();
+  const navigation = useNavigation();
 
-    async function fetchPlaces() {
-        // const { data } = await api.get(`places?_sort=name&_order=asc&_page=${page}&_limit=8`);
-        const { data } = await herokuApi.get(`/preferences`);
-        console.log('data:' + data)
-        setPreference(data.preferencesInfo);
+  async function fetchPlaces() {
+    const { data } = await herokuApi.get(`/preferences`);
+    if(!data.preferencesInfo)
+          return setLoading(true);
+    setLoading(false);
+    setPreference(data.preferencesInfo);
+  }
 
+  useEffect(() => {
+    fetchPlaces();
+    LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
+  }, [])
+
+  useEffect(() => {
+    const cat1 = preference.filter((item: PreferenceProps) => item.id_categoria === "1")
+    setFilter1(cat1);
+    const cat2 = preference.filter((item: PreferenceProps) => item.id_categoria === "2")
+    setFilter2(cat2);
+    const cat3 = preference.filter((item: PreferenceProps) => item.id_categoria === "3")
+    setFilter3(cat3);
+  }, [preference])
+
+  function handleSubmit(){
+    setPreferenceSelected(preferenceSelected.splice(1, preferenceSelected.length));
+    navigation.navigate('Profession');
+  }
+
+  function handlePreferenceSelected(item: string){
+    if(preferenceSelected.includes(item) === true){
+      setPreferenceSelected(preferenceSelected.filter(value => value !== item))
     }
-
-    useEffect(() => {
-        fetchPlaces();
-    }, [])
-
-    function handleSubmit(){
-        navigation.navigate('Profession');
+    else{
+      setPreferenceSelected([...preferenceSelected, item]);
     }
+  }
 
-    return(
-      <SafeAreaView style={styles.container}>
-        <KeyboardAvoidingView 
-          style={styles.container}
-          behavior={ Platform.OS === 'ios' ? 'padding' : 'height'}>
-
-          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <View style={styles.content}>
-            <View style={styles.form}>
-              <View style={styles.header}>
-                <Text style={styles.title}>
-                  Para realizarmos { '\n'} algumas indicações, 
-                  quais são seus gostos pessoais?  
-                </Text>
-              </View>
-
-              {/* <View style={styles.options}>
-                <FlatList 
-                  data={preference}
-                  renderItem={({ item }) => (
-                    <Check value={item} setValue={setPreference} text={item}/>
-                  )}
-                  /> */}
-
-              <Check value={esportes} setValue={setEsportes} text="Esporte" />
-              <Check value={musica} setValue={setMusica} text="Musica"/>
-              <Check value={game} setValue={setGame} text="Games"/>
-              <Check value={arte} setValue={setArte} text="Arte"/>
-              <Check value={design} setValue={setDesign} text="Design"/>
-              <Check value={automobilismo} setValue={setAutomobilismo} text="Automobilismo"/>
-            </View>
-                  
-            <View style={styles.footer}>
-                <Button title="Confirmar" alt={false} onPress={handleSubmit}/>
-            </View>   
+  if(loading){
+    return <Load />
+}
+  return(
+    <View style={styles.container}>
+      <View style={styles.content}>
+        <View style={styles.form}>
+          <View style={styles.header}>
+            <Text style={styles.title}>
+              Baseado em cada categoria abaixo,
+              quais são seus gostos pessoais? 
+            </Text>
           </View>
-          </TouchableWithoutFeedback>
-        </KeyboardAvoidingView>
-      </SafeAreaView>
-    )
+          <ScrollView style={{flex: 1, width: '100%'}}>
+            <View style={styles.list}>
+              <View style={{marginVertical: 10}}>
+                <Text style={styles.category}>Gostos Gerais</Text>
+              </View>              
+              <FlatList
+                data={filter1}
+                keyExtractor={(item) => String(item.id)}
+                renderItem={({ item }) => (
+                  <TouchableOpacity activeOpacity={0.6}>
+                    <PreferencesCard data={item} onPress={() => handlePreferenceSelected(item.id)} 
+                      style={preferenceSelected.includes(item.id) ? styles.cardSelected : styles.card}/>
+                  </TouchableOpacity>
+                  )}
+                    showsVerticalScrollIndicator={false}
+                    numColumns={1}   
+                    onEndReachedThreshold={0.1}                          
+                  />
+              <View style={{marginVertical: 10}}>
+                <Text style={styles.category}>Restaurantes</Text>
+              </View>
+              <FlatList
+                data={filter2}
+                keyExtractor={(item) => String(item.id)}
+                renderItem={({ item }) => (
+                  <TouchableOpacity activeOpacity={0.6}>
+                    <PreferencesCard data={item} onPress={() => handlePreferenceSelected(item.id)} 
+                      style={preferenceSelected.includes(item.id) ? styles.cardSelected : styles.card}/>
+                  </TouchableOpacity>
+                  )}
+                    showsVerticalScrollIndicator={false}
+                    numColumns={1}   
+                    onEndReachedThreshold={0.1}                          
+                  />
+              <View style={{marginVertical: 10}}>
+                <Text style={styles.category}>Bares</Text>
+              </View>
+              <FlatList
+                data={filter3}
+                keyExtractor={(item) => String(item.id)}
+                renderItem={({ item }) => (
+                  <TouchableOpacity activeOpacity={0.6}>
+                  <PreferencesCard data={item} onPress={() => handlePreferenceSelected(item.id)} 
+                    style={preferenceSelected.includes(item.id) ? styles.cardSelected : styles.card}/>
+                  </TouchableOpacity>
+                  )}
+                    showsVerticalScrollIndicator={false}
+                    numColumns={1}   
+                    onEndReachedThreshold={0.1}                          
+                  />
+            </View>
+          </ScrollView>
+          <View style={styles.footer}>
+            <Button alt={false} title="Confirmar" onPress={handleSubmit}/>
+          </View>
+        </View>
+      </View>
+  </View>
+  )
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        width: '100%',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    content: {
-        flex: 1,
-        width: '100%'
-    },
-    form: {
+  container: {
+    flex: 1,
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginVertical: 50
+  },
+  content: {
+      flex: 1,
+      width: '100%'
+  },
+  form: {
       flex: 1,
       justifyContent: 'center',
       paddingHorizontal: 54,
       alignItems: 'center',
-    },
-    header: {
-        alignItems: 'center'
-    },
-    input: {
-        borderBottomWidth: 1,
-        borderColor: colors.gray,
-        color: colors.heading,
-        width: '100%',
-        fontSize: 18,
-        marginTop: 50,
-        padding: 10,
-        textAlign: 'center'
-    },
-    title: {
-        fontSize: 24,
-        lineHeight: 32,
-        textAlign: 'center', 
-        color: colors.heading,
-        fontFamily: fonts.heading,
-        marginVertical: 20,
-    },
-    footer: {
-        marginTop: 40,
-        width: '100%',
-        paddingHorizontal: 20  
-    },
-    checkbox: {
-        alignSelf: "center",
-    },
-    checkboxContainer: {
-        flexDirection: "row",
-    },
-    label: {
-        // justifyContent: 'space-around',
-        marginLeft: 10,
-        fontSize: 20
-    },
-    options: {
-      alignItems: 'flex-start',
-    },
+  },
+  emoji: {
+      fontSize: 44
+  },
+  header: {
+      alignItems: 'center'
+  },
+  input: {
+      borderBottomWidth: 1,
+      borderColor: colors.gray,
+      color: colors.heading,
+      width: '100%',
+      fontSize: 18,
+      marginTop: 50,
+      padding: 10,
+      textAlign: 'center'
+  },
+  title: {
+      fontSize: 24,
+      lineHeight: 32,
+      textAlign: 'center', 
+      color: colors.heading,
+      fontFamily: fonts.heading,
+      marginVertical: 20,
+  },
+  category: {
+    fontSize: 20,
+    lineHeight: 32,
+    textAlign: 'center', 
+    color: colors.main,
+    fontFamily: fonts.heading,
+},
+  footer: {
+    width: '100%',
+    paddingHorizontal: 20,
+    marginTop: 20  
+  },
+  checkbox: {
+      alignSelf: "center",
+  },
+  checkboxContainer: {
+      flexDirection: "row",
+  },
+  label: {
+      marginLeft: 10,
+      fontSize: 20
+  },
+  options: {
+    alignItems: 'flex-start',
+  },
+  list: {
+    flex: 1,
+    paddingHorizontal: 5,
+    justifyContent: 'center',
+    width: '100%'
+  },
+  card: {
+    flexDirection: 'row',
+    maxWidth: '100%',
+    backgroundColor: colors.shape,
+    borderRadius: 5,
+    paddingVertical: 15,
+    alignItems: 'flex-start',
+    paddingHorizontal: 10,
+    margin: 5,
+    borderWidth: 1
+  },
+  cardSelected: {
+    flexDirection: 'row',
+    maxWidth: '100%',
+    backgroundColor: colors.main,
+    borderRadius: 5,
+    paddingVertical: 15,
+    alignItems: 'flex-start',
+    paddingHorizontal: 10,
+    margin: 5,
+    borderWidth: 1
+  }
 });

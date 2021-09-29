@@ -27,7 +27,6 @@ export function Profession(){
     const navigation = useNavigation()
 
     async function fetchProfessions() {
-      // const { data } = await api.get(`places?_sort=name&_order=asc&_page=${page}&_limit=8`);
       const { data } = await herokuApi.get(`/professions`);
 
       if(data.professionsInfo){
@@ -44,7 +43,6 @@ export function Profession(){
 
     function professionSelect(item: ProfessionProps){
       setProfessionSelected(item);
-      console.log("profession: "+ professionSelected);
     }
 
     useEffect(() => {
@@ -56,7 +54,6 @@ export function Profession(){
     }
 
     function handleProfessionSelected(item: ProfessionProps){
-      console.log(professionIdSelected)
       professionSelect(item)
       setProfessionIdSelected(item.id)
     }

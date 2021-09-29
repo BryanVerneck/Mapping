@@ -19,8 +19,9 @@ export function Login(){
   }
 
   function handleRegistration(){
-    navigation.navigate('Registration');
+    // navigation.navigate('Registration');
     // navigation.navigate('Confirmation');
+    navigation.navigate('Preferences');
   }
 
   function handleEmailInputChange(value: string){

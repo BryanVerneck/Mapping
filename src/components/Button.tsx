@@ -39,11 +39,11 @@ export function Button({ title, alt, ...rest } : ButtonProps){
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: color.main,
-        height: 56,
-        borderRadius: 10,
-        justifyContent: 'center',
-        alignItems: 'center'
+      backgroundColor: color.main,
+      height: 56,
+      borderRadius: 10,
+      justifyContent: 'center',
+      alignItems: 'center',
     },
     alternativeContainer: {
       backgroundColor: color.white,
