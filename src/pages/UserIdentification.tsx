@@ -16,10 +16,10 @@ import fonts from '../../styles/fonts';
 import { useNavigation } from '@react-navigation/core';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import herokuApiSauce from '../services/HerokuAPISauce';
-import { UserData } from './Registration';
+import { Data } from '../contexts/userDataContext';
 
 export function UserIdentification(){
-  const { email, senha, confirmarSenha, dataNascimento, sexo } = useContext(UserData);
+  const { email, senha, confirmarSenha, sexo, newDate, professionIdSelected, preferenceSelected } = useContext(Data);
 
   const [ name, setName ] = useState('');
 
@@ -27,66 +27,23 @@ export function UserIdentification(){
 
   async function handleSubmit(){
     if(!name){
-      console.log("email:" + email);
       return Alert.alert('Me diz como chamar você 😥')
     }
 
     await AsyncStorage.setItem('@mapping:user', name);
 
     await herokuApiSauce.post('/user/addUser', {
-      nome: "Bryan",
-      senha: "12345678",
-      senha_confirma: "12345678",
-      email: "bryanverneck@gmail.com",
-      data_nascimento: '2000-01-01',
-      sexo: 'M',
-      id_profissao: "1",
-      gostos_pessoais: [
-        "1", "3", "4"
-      ]
+      nome: name,
+      senha: senha,
+      senha_confirma: confirmarSenha,
+      email: email,
+      data_nascimento: newDate,
+      sexo: sexo,
+      id_profissao: professionIdSelected,
+      gostos_pessoais: preferenceSelected
     }).then(response => console.log(response)).catch(e => console.log(e.data.message));
-
-    // const data = await herokuApi.post('/user/addUser', {
-    //   nome: "Bryan",
-    //   senha: "12345678",
-    //   senha_confirma: "12345678",
-    //   email: 'bryanvck@gmail.com',
-    //   data_nascimento: '2000-01-01',
-    //   sexo: 'M',
-    //   id_profissao: "1",
-    //   gostos_pessoais: [
-    //     "1", "3", "4"
-    //   ]
-    // })
-
-    // console.log(data);
     
-    //   await fetch('https://api-mapping.herokuapp.com/user/addUser', {
-    //     method: 'post',
-    //     mode: 'no-cors',
-    //     headers: {
-    //       'Accept': 'application/json',
-    //       'Content-type': 'application/json'
-    //     },
-    //     body: JSON.stringify({
-    //       nome: "Bryan",
-    //       senha: "12345678",
-    //       senha_confirma: "12345678",
-    //       email: 'bryanvck@gmail.com',
-    //       data_nascimento: '2000-01-01',
-    //       sexo: 'M',
-    //       id_profissão: "1",
-    //       gostos_pessoais: [
-    //         "1", "3", "4"
-    //       ]
-    //     })
-    //   })
-    // } catch(e) {
-    //   console.log(e);
-    // }
-    
-    navigation.navigate('PlaceSelect');
-  // navigation.navigate('Confirmation');
+    navigation.navigate('Confirmation');
   }
 
   function handleInputChange(value: string){

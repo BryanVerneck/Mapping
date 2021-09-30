@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { createContext, useState } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 import { SafeAreaView, View, StyleSheet, Text, Alert, KeyboardAvoidingView, Platform, Keyboard, TouchableWithoutFeedback} from 'react-native';
 import colors from '../../styles/colors';
 import fonts from '../../styles/fonts';
@@ -7,31 +7,12 @@ import { Button } from '../components/Button';
 import Input from '../components/Input';
 import DateTimePicker from '@react-native-community/datetimepicker'
 import { InputButton } from '../components/InputButton';
-import format from 'date-fns/format';
-import ptBR from 'date-fns/locale/pt-BR';
 import { Picker } from '@react-native-picker/picker';
-import { setDate } from 'date-fns';
-
-interface userData {
-  email: string;
-  senha: string;
-  confirmarSenha: string;
-  sexo: string;
-  dataNascimento: string;
-}
-
-export const UserData = createContext({} as userData);
+import { Data } from '../contexts/userDataContext';
 
 export function Registration(){
-  const [ email, setEmail ] = useState('');
-  const [ senha, setSenha ] = useState('');
-  const [ sexo, setSexo ] = useState('M');
+  const { email, senha, confirmarSenha, sexo, dataNascimento, setEmail, setSenha, setConfirmarSenha, setSexo, setdataNascimento, setNewDate } = useContext(Data);
   const [ showDate, setShowDate] = useState(false);
-  const [ confirmarSenha, setConfirmarSenha ] = useState('');
-  const [ dataNascimento, setdataNascimento ] = useState(format(new Date(), 'dd / MMM / Y', {
-    locale: ptBR
-  }))
-  const [ newDate, setNewDate ] = useState('')
   const [ data, setData ] = useState(new Date())
 
   const navigation = useNavigation();
@@ -45,6 +26,7 @@ export function Registration(){
       return Alert.alert('Sua senha e senha de confirmação precisam ser iguais 😯')
     }
     else{
+      console.log(email)
       navigation.navigate('Preferences');
     }
   }
@@ -54,7 +36,6 @@ export function Registration(){
   }
 
   return(
-    <UserData.Provider value={{ email, senha, confirmarSenha, sexo, dataNascimento }}>
       <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView 
                 style={styles.container}
@@ -95,7 +76,8 @@ export function Registration(){
                     if (date) {
                       const temp = date.toString();
                       setdataNascimento(temp.slice(8, 10) + '/' + temp.slice(4, 7) + '/' + temp.slice(11, 16))
-                      setNewDate(date.getFullYear() + '-' + date.getMonth().toString().padStart(2, '0') + '-' + date.getDate().toString().padStart(2, '0'))
+                      const mounth = date.getMonth() + 1;
+                      setNewDate(date.getFullYear() + '-' + mounth.toString().padStart(2, '0') + '-' + date.getDate().toString().padStart(2, '0'))
                     }
                  }}
                 />
@@ -112,7 +94,6 @@ export function Registration(){
         </TouchableWithoutFeedback>
       </KeyboardAvoidingView>
     </SafeAreaView>
-    </UserData.Provider>
   )
 }
 

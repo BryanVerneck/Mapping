@@ -13,8 +13,6 @@ export function Welcome(){
     
     function handleStart(){
         navigation.navigate('Login');
-        // navigation.navigate('Preferences');
-        // navigation.navigate('Registration');
     }
 
     return(

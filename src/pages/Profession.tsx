@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import { View, Text, SafeAreaView, StyleSheet, FlatList, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard } from 'react-native';
 
@@ -10,7 +10,7 @@ import { ProfessionsCard } from '../components/professionsCard';
 import { Button } from '../components/Button';
 import fonts from '../../styles/fonts';
 import { Load } from '../components/Load';
-import { Check } from '../components/Check';
+import { Data } from '../contexts/userDataContext';
 
 interface ProfessionProps {
   id: string
@@ -18,11 +18,10 @@ interface ProfessionProps {
 }
 
 export function Profession(){
+    const { professionIdSelected, setProfessionIdSelected } = useContext(Data);
     const [loading, setLoading] = useState(true);
     const [professions, setProfessions] = useState<ProfessionProps[]>([]);
-
-    const [professionSelected, setProfessionSelected] = useState<ProfessionProps>();
-    const [professionIdSelected, setProfessionIdSelected] = useState('');
+    const [professionSelected, setProfessionSelected] = useState('');
     
     const navigation = useNavigation()
 

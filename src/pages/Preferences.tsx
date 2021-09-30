@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { 
-    StyleSheet, 
-    View, 
-    Text,
-    LogBox, 
-    } from 'react-native';
+  StyleSheet, 
+  View, 
+  Text,
+  LogBox, 
+  } from 'react-native';
 import { Button } from '../components/Button';
 import colors from '../../styles/colors';
 import { useNavigation } from '@react-navigation/core';
@@ -13,6 +13,7 @@ import { FlatList, ScrollView, TouchableOpacity } from 'react-native-gesture-han
 import herokuApi from '../services/HerokuAPI';
 import { PreferencesCard } from '../components/PreferencesCard';
 import { Load } from '../components/Load';
+import { Data } from '../contexts/userDataContext';
 
 interface PreferenceProps {
   id: string;
@@ -21,8 +22,8 @@ interface PreferenceProps {
 }
 
 export function Preferences(){
+  const { preferenceSelected, setPreferenceSelected } = useContext(Data);
   const [preference, setPreference] = useState([]);
-  const [preferenceSelected, setPreferenceSelected] = useState(['']);
   const [loading, setLoading] = useState(true);
   const [filter1, setFilter1] = useState([]);
   const [filter2, setFilter2] = useState([]);

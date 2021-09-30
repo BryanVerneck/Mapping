@@ -15,13 +15,10 @@ export function Login(){
 
   function handleLogin(){
     navigation.navigate('PlaceSelect');
-    // navigation.navigate('Confirmation');
   }
 
   function handleRegistration(){
-    // navigation.navigate('Registration');
-    // navigation.navigate('Confirmation');
-    navigation.navigate('Preferences');
+    navigation.navigate('Registration');
   }
 
   function handleEmailInputChange(value: string){

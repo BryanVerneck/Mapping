@@ -77,7 +77,6 @@ export function PlaceSelect(){
     }
 
     async function fetchPlaces() {
-        // const { data } = await api.get(`places?_sort=name&_order=asc&_page=${page}&_limit=8`);
         const { data } = await mapsApi.get(`/json?location=-33.8670522,151.195736&radius=2000&keyword=restaurant|bar|park|museum&key=AIzaSyC_gkGpo4lfPP7bVMqBeMfu2nB7JmRfgF0`);
        
         if(!data.results)

@@ -31,7 +31,7 @@ export function Confirmation(){
                 </Text>
 
                 <View style={styles.footer}>
-                    <Button title="Começar" onPress={handleMoveOn}/>
+                    <Button title="Começar" onPress={handleMoveOn} alt={false}/>
                 </View>
             </View>
         </SafeAreaView>
