@@ -44,6 +44,7 @@ const styles = StyleSheet.create({
       borderRadius: 10,
       justifyContent: 'center',
       alignItems: 'center',
+      marginVertical: 5
     },
     alternativeContainer: {
       backgroundColor: color.white,
@@ -52,7 +53,8 @@ const styles = StyleSheet.create({
       height: 56,
       borderRadius: 10,
       justifyContent: 'center',
-      alignItems: 'center'
+      alignItems: 'center',
+      padding: 10
   },
     text: {
         fontSize: 16,

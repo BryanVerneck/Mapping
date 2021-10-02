@@ -11,6 +11,7 @@ import { RatingCard } from '../components/RatingCard';
 import ratingOptions from '../services/ratingOptions.json';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MapView, { Marker } from 'react-native-maps';
+import herokuApiSauce from '../services/HerokuAPISauce';
 
 const rating = ratingOptions;
 
@@ -44,16 +45,25 @@ export function PlaceDetail(){
   const route = useRoute();
   const { place } = route.params as Params;
   
-  function handleRateSelected(item: RatingProps) {
-    console.log(item.value);
-    setRateIdSelected(item.value);
-  }
-
   async function submitRate(){
+    await herokuApiSauce.post('/reviews/addReview', {
+      descricao: "dummy",
+      id_estabelecimento_places: place.place_id,
+      id_usuario: 2,
+      nota: rateIdSelected,
+      nome_estabelecimento: place.name,
+      localizacao: place.geometry.location.lat + "|" + place.geometry.location.lng
+    }).then(response => console.log(response)).catch(e => console.log(e.data.message));
+    
     setShowDialog(false)
     await AsyncStorage.setItem('@mapping:placeRate', rateIdSelected);
   }
 
+  function handleRateSelected(item: RatingProps) {
+    console.log(item.value);
+    setRateIdSelected(item.value);
+  }
+  
   return(
     <>
       <MapView

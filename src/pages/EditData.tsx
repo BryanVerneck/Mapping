@@ -10,7 +10,7 @@ import { InputButton } from '../components/InputButton';
 import { Picker } from '@react-native-picker/picker';
 import { Data } from '../contexts/userDataContext';
 
-export function Registration(){
+export function EditData(){
   const { email, senha, confirmarSenha, sexo, dataNascimento, newDate, setEmail, setSenha, setConfirmarSenha, setSexo, setdataNascimento, setNewDate } = useContext(Data);
   const [ showDate, setShowDate] = useState(false);
   const [ data, setData ] = useState(new Date())
@@ -28,7 +28,7 @@ export function Registration(){
     }
 
     else{
-      console.log("Date: " + newDate);
+      console.log("Date: "+ newDate);
       navigation.navigate('Preferences');
     }
   }
@@ -51,7 +51,7 @@ export function Registration(){
             <View style={styles.form}>
               <View style={styles.header}>
                 <Text style={styles.title}>
-                    Precisamos de apenas algumas informações
+                    Editar
                 </Text>
               </View>
               <Input placeholder="E-mail" type="email-address" onChange={(value: string) => setEmail(value)}/>

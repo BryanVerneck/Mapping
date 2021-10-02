@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { SafeAreaView, Text, Image, TouchableOpacity, StyleSheet, Dimensions, View } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/core';
@@ -6,48 +6,60 @@ import colors from '../../styles/colors';
 import fonts from '../../styles/fonts'
 import LottieView from 'lottie-react-native';
 import SearchingAnimation from '../assets/searchingData.json';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export function Welcome(){
 
-    const navigation = useNavigation();
-    
-    function handleStart(){
-        navigation.navigate('Login');
-    }
+useEffect(() => {
+  
+  async function handleUserNextScreen() {
+    const userToken = await AsyncStorage.getItem('@mapping:userToken');
 
-    return(
-        <SafeAreaView style={styles.container}>
-            <View style={styles.wrapper}>
-                <Text style={styles.title}>
-                Encontre seu{'\n'}
-                local favorito de{ '\n'}
-                forma fácil
+    navigation.navigate(userToken ? 'PlaceSelect' : 'Login');
+  }
+
+    handleUserNextScreen();
+  }, []);
+
+  const navigation = useNavigation();
+  
+  function handleStart(){
+      navigation.navigate('Login');
+  }
+
+  return(
+    <SafeAreaView style={styles.container}>
+        <View style={styles.wrapper}>
+            <Text style={styles.title}>
+            Encontre seu{'\n'}
+            local favorito de{ '\n'}
+            forma fácil
+            </Text>
+
+            <LottieView
+                source={SearchingAnimation}
+                autoPlay
+                loop
+                style={styles.animation}
+            />
+
+            <Text style={styles.subtitle}>
+            Não perca mais tempo procurando { '\n'} 
+            por um lugar novo. Nós procuramos para você.
+            </Text>
+
+            <TouchableOpacity style={styles.button} activeOpacity={0.6} onPress={handleStart}>
+                <Text>
+                    <Feather 
+                        name="chevron-right"
+                        style={styles.buttonIcon}
+                        />
                 </Text>
-
-                <LottieView
-                    source={SearchingAnimation}
-                    autoPlay
-                    loop
-                    style={styles.animation}
-                />
-
-                <Text style={styles.subtitle}>
-                Não perca mais tempo procurando { '\n'} 
-                por um lugar novo. Nós procuramos para você.
-                </Text>
-
-                <TouchableOpacity style={styles.button} activeOpacity={0.6} onPress={handleStart}>
-                    <Text>
-                        <Feather 
-                            name="chevron-right"
-                            style={styles.buttonIcon}
-                            />
-                    </Text>
-                </TouchableOpacity>
-            </View>
-            
-        </SafeAreaView>
-    )
+            </TouchableOpacity>
+        </View>
+        
+    </SafeAreaView>
+  )
 }
 
 const styles = StyleSheet.create({

@@ -14,6 +14,7 @@ import placeType from '../services/server.json';
 import { useNavigation } from '@react-navigation/native';
 
 import * as Location from 'expo-location'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface TypeProps {
     key: string;
@@ -42,6 +43,7 @@ export function PlaceSelect(){
     const navigation = useNavigation()
 
     useEffect(() => {
+      // AsyncStorage.setItem('@mapping:userToken', '');
       async function getCoords() {
         Location.installWebGeolocationPolyfill()
         await navigator.geolocation.getCurrentPosition(
@@ -196,7 +198,7 @@ const styles = StyleSheet.create({
       backgroundColor: colors.background
     },
     header:{
-      paddingHorizontal: 30,
+      paddingHorizontal: 17,
     },
     title: {
       fontSize: 17,
@@ -215,13 +217,13 @@ const styles = StyleSheet.create({
       height: 40,
       justifyContent: 'center',
       paddingBottom: 5,
-      marginLeft: 30,
-      paddingRight: 60,
+      marginLeft: 15,
+      paddingRight: 30,
       marginVertical: 15,
     },
     places: {
       flex: 1,
-      paddingHorizontal: 32,
+      paddingHorizontal: 15,
       justifyContent: 'center',
     }
 });

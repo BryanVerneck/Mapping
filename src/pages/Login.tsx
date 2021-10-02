@@ -1,11 +1,18 @@
-import React, { useState } from 'react';
-import { SafeAreaView, View, StyleSheet, Text, Alert, KeyboardAvoidingView, Platform, Keyboard} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { SafeAreaView, View, StyleSheet, Text, Alert, KeyboardAvoidingView, Platform, Keyboard, AsyncStorage} from 'react-native';
 import Input from '../components/Input';
 import {Button} from '../components/Button';
 import colors from '../../styles/colors';
 import fonts from '../../styles/fonts';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
+import herokuApiSauce from '../services/HerokuAPISauce';
+import api from '../services/api';
+
+// interface TokenProps {
+//   errors: string,
+//   userToken: string
+// }
 
 export function Login(){
   const [email, setEmail] = useState('');
@@ -13,8 +20,34 @@ export function Login(){
 
   const navigation = useNavigation();
 
-  function handleLogin(){
-    navigation.navigate('PlaceSelect');
+  // useEffect(() => {
+  //   async function handleUserNextScreen() {
+  //     const userToken = await AsyncStorage.getItem('@mapping:userToken');
+
+  //     navigation.navigate(userToken ? 'PlaceSelect' : 'Login');
+  //   }
+
+  //   handleUserNextScreen();
+
+  //   AsyncStorage.setItem('@mapping:userToken', JSON.stringify(null));
+    
+  // }, []);
+
+  async function handleLogin(){
+    await api.post('/user/login', { 
+      email: email,
+      senha: password,
+    }).then(response => {
+      if(!response.status){
+        Alert.alert("Login e/ou senha incorreto(s) 😕")
+      }
+      else{
+        console.log("AAAAA: "+ response.data.userData);
+        AsyncStorage.setItem('@mapping:userToken', JSON.stringify(response.data.userData));
+
+        navigation.navigate('PlaceSelect');
+      }
+    }).catch(e => console.log(e.data.message));
   }
 
   function handleRegistration(){
@@ -42,14 +75,14 @@ export function Login(){
                     Olá, seja muito bem-vindo!
                 </Text>
               </View>
-              <Input placeholder="E-mail de usuário" onChange={handleEmailInputChange}/>
-              <Input placeholder="Senha" onChange={handlePasswordInputChange}/>
+              <Input placeholder="E-mail de usuário" onChange={handleEmailInputChange} type="email-address"/>
+              <Input placeholder="Senha" onChange={handlePasswordInputChange} type="visible-password"/>
               <View style={styles.loginButton}>
-                <Button
-                title="Login"
-                alt = {false}
-                onPress={handleLogin}
-                />
+                { email && password ? 
+                <Button title="Login" alt={false} onPress={handleLogin}/> 
+                :
+                <Button title="Login" alt = {false} onPress={handleLogin} disabled/>
+                }
               </View>
               <View style={styles.RegisterButton}>
                 <Button
@@ -99,12 +132,12 @@ const styles = StyleSheet.create({
       marginTop: 20
   },
   loginButton: {
-      marginTop: 40,
+      marginTop: 30,
       width: '100%',
       paddingHorizontal: 20  
   },
   RegisterButton: {
-    marginTop: 40,
+    marginTop: 30,
     width: '100%',
     paddingHorizontal: 20  
   },

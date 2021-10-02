@@ -7,9 +7,14 @@ import userImg from '../assets/ProfileImage.png'
 import colors from '../../styles/colors';
 import fonts from '../../styles/fonts';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
+import { AntDesign } from '@expo/vector-icons';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export function Header(){
   const [name, setName] = useState('');
+
+  const navigation = useNavigation()
 
   useEffect(() => {
     async function loadStorageUserName(){
@@ -20,17 +25,27 @@ export function Header(){
     loadStorageUserName();
   }, []);
 
-    return(
-        <View style={styles.container}>
-            <View>
-                <Text style={styles.gretting}>Olá,</Text>
-                <Text style={styles.userName}>{name}</Text>
-            </View>
+  function handleEditData(){
+    navigation.navigate('Configuration');
+  }
 
-            <Image source={userImg} style={styles.image}/>
+  return(
+    <View style={styles.container}>
+      <View>
+        <Text style={styles.gretting}>Olá,</Text>
+        <Text style={styles.userName}>{name}</Text>
+      </View>
 
-        </View>
-    )
+      {/* <Image source={userImg} style={styles.image}/> */}
+      
+      <TouchableOpacity style={styles.button} activeOpacity={0.6} onPress={handleEditData}>
+        <Text>
+          <AntDesign name="setting" size={30} color="black" />
+        </Text>
+      </TouchableOpacity>
+      
+    </View>
+  )
 }
 
 const styles = StyleSheet.create({
@@ -43,12 +58,12 @@ const styles = StyleSheet.create({
         marginTop: getStatusBarHeight(),
     },
     gretting: {
-        fontSize: 32,
+        fontSize: 28,
         color: colors.heading,
         fontFamily: fonts.text
     },
     userName: {
-        fontSize: 32,
+        fontSize: 28,
         fontFamily: fonts.heading,
         lineHeight: 40
     },
@@ -56,5 +71,14 @@ const styles = StyleSheet.create({
         width: 70,
         height: 70,
         borderRadius: 50
+    },
+    button: {
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginTop: 15,
+      borderRadius: 10,
+      marginBottom: 10,
+      height: 50,
+      width: 60,
     }
 })

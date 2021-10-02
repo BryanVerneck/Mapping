@@ -6,9 +6,10 @@ interface PlaceholderProps {
   placeholder: string;
   onChange: any;
   type: any;
+  length: number;
 }
 
-export default function Input({ placeholder, onChange, type } : PlaceholderProps){
+export default function Input({ placeholder, onChange, type, length } : PlaceholderProps){
   const [ isFocused, setIsFocused ] = useState(false);
   const [ isFilled, setIsFilled ] = useState(false);
   const [ name, setName ] = useState<string>();
@@ -22,11 +23,6 @@ export default function Input({ placeholder, onChange, type } : PlaceholderProps
     setIsFocused(true);
   }
 
-  function handleInputChange(value: string){
-    setIsFilled(!!value);
-    setName(value);
-  }
-
   return(
     <TextInput
       style={[
@@ -38,7 +34,8 @@ export default function Input({ placeholder, onChange, type } : PlaceholderProps
       onFocus={handleInputFocus}
       onChangeText={onChange}
       keyboardType={type}
-      // maxLength={15}
+      maxLength={length}
+      // secureTextEntry={true}
     />
   )
 }

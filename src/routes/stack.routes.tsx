@@ -13,65 +13,78 @@ import { Login } from '../pages/Login';
 import { Registration } from '../pages/Registration';
 import { PlaceDetail } from '../pages/placeDetail';
 import { Profession } from '../pages/Profession';
+import { EditData } from '../pages/EditData';
+import { Configuration } from '../pages/Configuration';
 
 const stackRoutes = createStackNavigator();
 
 const AppRoutes: React.FC = () => (
-    <stackRoutes.Navigator
-        headerMode="none"
-        screenOptions={{
-            cardStyle: {
-                backgroundColor: colors.white
-            },
-        }}
-    >
+  <stackRoutes.Navigator
+    headerMode="none"
+    screenOptions={{
+        cardStyle: {
+            backgroundColor: colors.white
+        },
+    }}
+  >
+  
+  <stackRoutes.Screen 
+      name="Welcome"
+      component={Welcome}
+  />
 
-        <stackRoutes.Screen 
-            name="Welcome"
-            component={Welcome}
-        />
+  <stackRoutes.Screen 
+      name="Preferences"
+      component={Preferences}
+  />
 
-        <stackRoutes.Screen 
-            name="Preferences"
-            component={Preferences}
-        />
+  <stackRoutes.Screen 
+      name="UserIdentification"
+      component={UserIdentification}
+  />
 
-        <stackRoutes.Screen 
-            name="UserIdentification"
-            component={UserIdentification}
-        />
+  <stackRoutes.Screen 
+      name="Confirmation"
+      component={Confirmation}
+  />
 
-        <stackRoutes.Screen 
-            name="Confirmation"
-            component={Confirmation}
-        />
+  <stackRoutes.Screen 
+      name="PlaceSelect"
+      component={PlaceSelect}
+  />
 
-        <stackRoutes.Screen 
-            name="PlaceSelect"
-            component={PlaceSelect}
-        />
+  <stackRoutes.Screen 
+      name="Login"
+      component={Login}
+  />
 
-        <stackRoutes.Screen 
-            name="Login"
-            component={Login}
-        />
+  <stackRoutes.Screen 
+      name="Registration"
+      component={Registration}
+  />
 
-        <stackRoutes.Screen 
-            name="Registration"
-            component={Registration}
-        />
+  <stackRoutes.Screen 
+      name="PlaceDetail"
+      component={PlaceDetail}
+  />
 
-        <stackRoutes.Screen 
-            name="PlaceDetail"
-            component={PlaceDetail}
-        />
+  <stackRoutes.Screen 
+      name="Profession"
+      component={Profession}
+  />
 
-        <stackRoutes.Screen 
-            name="Profession"
-            component={Profession}
-        />
+<stackRoutes.Screen 
+      name="EditData"
+      component={EditData}
+  />
 
-    </stackRoutes.Navigator>
+<stackRoutes.Screen 
+      name="Configuration"
+      component={Configuration}
+  />
+
+
+  </stackRoutes.Navigator>
 )
 
 export default AppRoutes;
