@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { SafeAreaView, View, StyleSheet, Text, Alert, KeyboardAvoidingView, Platform, Keyboard, TouchableWithoutFeedback} from 'react-native';
 import colors from '../../styles/colors';
 import fonts from '../../styles/fonts';

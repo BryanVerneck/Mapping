@@ -40,7 +40,7 @@ export function Header(){
       
       <TouchableOpacity style={styles.button} activeOpacity={0.6} onPress={handleEditData}>
         <Text>
-          <AntDesign name="setting" size={30} color="black" />
+          <AntDesign name="setting" size={25} color="black" />
         </Text>
       </TouchableOpacity>
       

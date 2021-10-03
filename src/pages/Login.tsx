@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { SafeAreaView, View, StyleSheet, Text, Alert, KeyboardAvoidingView, Platform, Keyboard, AsyncStorage} from 'react-native';
 import Input from '../components/Input';
 import {Button} from '../components/Button';
@@ -8,13 +8,13 @@ import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
 import herokuApiSauce from '../services/HerokuAPISauce';
 import api from '../services/api';
-
-// interface TokenProps {
-//   errors: string,
-//   userToken: string
-// }
+import jwt from 'jwt-decode';
+import { CurrentUserData } from '../contexts/CurrentUserContext';
+import { UserProps } from '../models/UserProps';
 
 export function Login(){
+  let user: UserProps;
+  const { id, setId } = useContext(CurrentUserData);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -38,16 +38,15 @@ export function Login(){
       email: email,
       senha: password,
     }).then(response => {
-      if(!response.status){
-        Alert.alert("Login e/ou senha incorreto(s) 😕")
-      }
-      else{
-        console.log("AAAAA: "+ response.data.userData);
-        AsyncStorage.setItem('@mapping:userToken', JSON.stringify(response.data.userData));
-
-        navigation.navigate('PlaceSelect');
-      }
-    }).catch(e => console.log(e.data.message));
+      navigation.navigate('PlaceSelect');
+      user = jwt(response.data.userData);
+      setId(user.userData.id);
+      console.log(user.userData.id)
+      AsyncStorage.setItem('@mapping:userToken', JSON.stringify(response.data.userData));
+      AsyncStorage.setItem('@mapping:CurrentUserId', id);
+    }).catch(() => {
+        Alert.alert("Login e/ou senha incorreto(s) 😕")}
+      );
   }
 
   function handleRegistration(){
@@ -75,8 +74,8 @@ export function Login(){
                     Olá, seja muito bem-vindo!
                 </Text>
               </View>
-              <Input placeholder="E-mail de usuário" onChange={handleEmailInputChange} type="email-address"/>
-              <Input placeholder="Senha" onChange={handlePasswordInputChange} type="visible-password"/>
+              <Input placeholder="E-mail de usuário" onChange={handleEmailInputChange} type="email-address" length={50}/>
+              <Input placeholder="Senha" onChange={handlePasswordInputChange} type="visible-password" length={50}/>
               <View style={styles.loginButton}>
                 { email && password ? 
                 <Button title="Login" alt={false} onPress={handleLogin}/> 

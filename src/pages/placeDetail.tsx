@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { StyleSheet, Text, View, Image, TouchableOpacity, OpaqueColorValue, Modal, Alert, Pressable } from 'react-native';
+import React, { useContext, useState } from 'react'
+import { StyleSheet, Text, View, TouchableOpacity, Modal,  } from 'react-native';
 import { getBottomSpace } from 'react-native-iphone-x-helper';
 import { useRoute } from '@react-navigation/core';
 import colors from '../../styles/colors';
@@ -12,6 +12,8 @@ import ratingOptions from '../services/ratingOptions.json';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MapView, { Marker } from 'react-native-maps';
 import herokuApiSauce from '../services/HerokuAPISauce';
+import { CurrentUserData } from '../contexts/CurrentUserContext';
+import herokuApi from '../services/HerokuAPI';
 
 const rating = ratingOptions;
 
@@ -39,6 +41,8 @@ interface Params {
 }
 
 export function PlaceDetail(){
+  const { id } = useContext(CurrentUserData);
+  const [reviewed, setReviewed] = useState(false);
   const [rateIdSelected, setRateIdSelected] = useState('');
   const [rateOptions, setRateOptions] = useState(rating.options);
   const [showDialog, setShowDialog] = useState(false)
@@ -49,14 +53,23 @@ export function PlaceDetail(){
     await herokuApiSauce.post('/reviews/addReview', {
       descricao: "dummy",
       id_estabelecimento_places: place.place_id,
-      id_usuario: 2,
+      id_usuario: id,
       nota: rateIdSelected,
       nome_estabelecimento: place.name,
       localizacao: place.geometry.location.lat + "|" + place.geometry.location.lng
     }).then(response => console.log(response)).catch(e => console.log(e.data.message));
-    
     setShowDialog(false)
     await AsyncStorage.setItem('@mapping:placeRate', rateIdSelected);
+    // getReviews(parseInt(id));
+  }
+
+  function getReviews(userId: number) {
+    herokuApi.get(`user/reviews/${userId}`)
+    .then(response => {
+      if(response.data.userReviews.id_estabelecimento == place.place_id){
+        setReviewed(true);
+      }
+    })  
   }
 
   function handleRateSelected(item: RatingProps) {
@@ -78,7 +91,9 @@ export function PlaceDetail(){
       <Marker coordinate = {{latitude: place.geometry.location.lat, longitude: place.geometry.location.lng}}
         pinColor = {colors.main}
         title={place.name}
-        description={place.types[0].toString()}/>
+        description={place.types[0].toString()}
+        onPress={() => window.open("", "_blank")}
+        />
       </MapView>
       <View style={styles.container}>
         <View style={styles.placeInfo}>
@@ -87,10 +102,10 @@ export function PlaceDetail(){
           </Text>
           <View style={styles.ratingContainer}>
             <Text style={styles.placeRating}>
-            ⭐ {place.rating}
+          ⭐ {place.rating}
             </Text>
             <Text style={styles.placeRating}>
-              ({place.user_ratings_total})
+            {place.user_ratings_total ? ` (${place.user_ratings_total})` : 'Avaliações não disponíveis :('}
             </Text>
           </View>
           <Text style={styles.placeText}>Endereço: {place.vicinity}</Text>
@@ -124,7 +139,8 @@ export function PlaceDetail(){
             </View>
           </View>
         </Modal>
-        <RatingButton title="Avaliar" onPress={() => setShowDialog(true)}/>
+        {!reviewed ? <RatingButton title="Avaliar" onPress={() => setShowDialog(true)}/> : 
+        <RatingButton title="Já avaliado" onPress={() => setShowDialog(true)} disabled/>}
       </View>
       </>
   )
@@ -155,6 +171,7 @@ const styles = StyleSheet.create({
     fontFamily: fonts.heading,
     fontSize: 24,
     color: colors.heading,
+    textAlign: 'center',
   },
   placeText: {
     fontFamily: fonts.heading,
@@ -183,7 +200,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: colors.heading,
     marginTop: 5,
-    marginLeft: 10
+    marginLeft: 0
   },
   ratingContainer: {
     flexDirection: 'row',

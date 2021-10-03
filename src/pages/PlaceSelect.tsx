@@ -80,7 +80,10 @@ export function PlaceSelect(){
 
     async function fetchPlaces() {
         const { data } = await mapsApi.get(`/json?location=-33.8670522,151.195736&radius=2000&keyword=restaurant|bar|park|museum&key=AIzaSyC_gkGpo4lfPP7bVMqBeMfu2nB7JmRfgF0`);
-       
+        // const newData = await mapsApi.get(`/json?location=-33.8670522,151.195736&radius=2000&keyword=park|museum&key=AIzaSyC_gkGpo4lfPP7bVMqBeMfu2nB7JmRfgF0`);
+
+        // console.log(newData.data.results)
+
         if(!data.results)
             return setLoading(true);
         if(page > 1){

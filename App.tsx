@@ -3,6 +3,7 @@ import AppLoading from 'expo-app-loading';
 import { useFonts, Jost_400Regular, Jost_600SemiBold } from '@expo-google-fonts/jost';
 import Routes from './src/routes';
 import { RegistrationProvider } from "./src/contexts/userDataContext"
+import { CurrentUserProvider } from "./src/contexts/CurrentUserContext"
 
 export default function App() {
   const [ fontsLoaded ] = useFonts({
@@ -17,8 +18,10 @@ export default function App() {
   }
 
   return (
-    <RegistrationProvider>
-      <Routes/>
-    </RegistrationProvider>
+    <CurrentUserProvider>
+      <RegistrationProvider>
+        <Routes/>
+      </RegistrationProvider>
+    </CurrentUserProvider>
   );
 }
