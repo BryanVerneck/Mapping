@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { View, Text, StyleSheet, FlatList, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, FlatList } from 'react-native';
 
 import { Load } from '../components/Load';
 import { Header } from '../components/Header';
@@ -15,6 +15,9 @@ import { useNavigation } from '@react-navigation/native';
 
 import * as Location from 'expo-location'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import api from '../services/api';
+import herokuApi from '../services/HerokuAPI';
+import ApiMapping from '../services/ApiMapping';
 
 interface TypeProps {
     key: string;
@@ -26,124 +29,172 @@ interface PlaceProps {
     name: string;
     icon: string;
     types: [string];
+    recomendar: string;
 }
 
 export function PlaceSelect(){
-    const [enviroments, setEnviroments] = useState<TypeProps[]>([]);
-    const [places, setPlaces] = useState<PlaceProps[]>([]);
-    const [filteredPlaces, setFilteredPlaces] = useState<PlaceProps[]>([]);
-    const [environmentSelected, setEnvironmentSelected] = useState('all');
-    const [loading, setLoading] = useState(true);
-    const [page, setPage] = useState(1);
-    const [loadingMore, setLoadingMore] = useState(false);
-    const [loadedAll, setLoadedAll] = useState(false);
-    const [latitude, setLatitude] = useState(0);
-    const [longitude, setLongitude] = useState(0);
+  const [id, setId] = useState('')
+  const [enviroments, setEnviroments] = useState<TypeProps[]>([]);
+  const [restaurant, setRestaurant] = useState<PlaceProps[]>([]);
+  const [bar, setBar] = useState<PlaceProps[]>([]);
+  const [park, setPark] = useState<PlaceProps[]>([]);
+  const [museum, setMuseum] = useState<PlaceProps[]>([]);
+  const [places, setPlaces] = useState<PlaceProps[]>([]);
+  const [filteredPlaces, setFilteredPlaces] = useState<PlaceProps[]>([]);
+  const [environmentSelected, setEnvironmentSelected] = useState('restaurant');
+  const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [loadedAll, setLoadedAll] = useState(false);
+  const [lat, setLat] = useState(0);
+  const [long, setLong] = useState(0);
 
-    const navigation = useNavigation()
+  const navigation = useNavigation();
 
-    useEffect(() => {
-      // AsyncStorage.setItem('@mapping:userToken', '');
-      async function getCoords() {
-        Location.installWebGeolocationPolyfill()
-        await navigator.geolocation.getCurrentPosition(
-          (position) => {
-            const { latitude, longitude } = position.coords;
-    
-            setLatitude(latitude);
-            setLongitude(longitude);
-          },
-          (err) => {
-            console.log(err);
-          },
-          {
-            timeout: 30000,
-          }
-        )
-      }
-      
-      getCoords();
-    }, []);
+  async function loadStorageUserId(){
+    const userId = await AsyncStorage.getItem('@mapping:CurrentUserId');
+    setId(userId || '');
+  }
+  
+  useEffect(() => {
+    getCoords();
+    fetchEnviroment();
+    loadStorageUserId();
+  }, [])
 
-    function handleEnvironmentSelected(type: string){
-        setEnvironmentSelected(type);
+  useEffect(() => {
+    if(id && lat && long){
+      fetchPlaces();
+      console.log(id)
+    }
+  }, [id, lat, long])
 
-        if(type == 'all')
-            return setFilteredPlaces(places);
-        
-        const filtered = places.filter(place => 
-            place.types.includes(type)
-        );
-
-        setFilteredPlaces(filtered);
+  useEffect(() => {
+    if(environmentSelected == 'restaurant'){
+      return setFilteredPlaces(restaurant);
     }
 
-    async function fetchPlaces() {
-        const { data } = await mapsApi.get(`/json?location=-33.8670522,151.195736&radius=2000&keyword=restaurant|bar|park|museum&key=AIzaSyC_gkGpo4lfPP7bVMqBeMfu2nB7JmRfgF0`);
-        // const newData = await mapsApi.get(`/json?location=-33.8670522,151.195736&radius=2000&keyword=park|museum&key=AIzaSyC_gkGpo4lfPP7bVMqBeMfu2nB7JmRfgF0`);
+    if(environmentSelected == 'bar'){
+      return setFilteredPlaces(bar);
+    }
 
-        // console.log(newData.data.results)
+    if(environmentSelected == 'park'){
+      return setFilteredPlaces(park);
+    }
 
-        if(!data.results)
-            return setLoading(true);
-        if(page > 1){
-            // setPlaces(oldValue => [...oldValue, ...data.results])
-            // setFilteredPlaces(oldValue => [...oldValue, ... data.results])
-        }else{
-            setPlaces(data.results);
-            setFilteredPlaces(data.results);
-        }
-        setLoading(false);
-        setLoadingMore(false);
+    if(environmentSelected == 'museum'){
+      return setFilteredPlaces(museum);
+    }
+  }, [environmentSelected])
+
+  async function getCoords() {
+    console.log('Coords')
+    Location.installWebGeolocationPolyfill()
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const { latitude, longitude } = position.coords;
+
+        setLat(latitude);
+        setLong(longitude);
+      },
+      (err) => {
+        console.log(err);
+      },
+      {
+        timeout: 30000,
+      }
+    )
+  }
+      
+  async function fetchEnviroment() {
+    console.log('Environ')
+    const data = placeType.places_environments;
+    setEnviroments([
+      ...data
+    ]);
+  }
+
+  function handleEnvironmentSelected(type: string){
+    setEnvironmentSelected(type);
+
+    // const filtered = places.filter(place => 
+    //     place.types.includes(type)
+    // );
+    
+    // setFilteredPlaces(filtered);
+  }
+
+  async function fetchPlaces() {
+    // const { data } = await mapsApi.get(`/json?location=${lat},${long}&radius=2000&keyword=restaurant|bar|park|museum&key=AIzaSyC_gkGpo4lfPP7bVMqBeMfu2nB7JmRfgF0`);
+    // await ApiMapping.get(`/recommender/477/2/restaurant/-25.4444/-49.2881`).then(res => setRestaurant(res.data.results));
+
+    await herokuApi.post(`/recommender/${id}/restaurant`, {
+      lat: "-25.4444",
+      long: "-49.2881",
+    }).then(res => {
+      setRestaurant(res.data.results)
+      setFilteredPlaces(res.data.results)
+    });
+    
+    api.post(`/recommender/${id}/bar`, {
+    "lat": "-25.4444",
+    "long": "-49.2881",
+    }).then(res => setBar(res.data.results));
+
+    api.post(`/recommender/${id}/museum`, {
+    "lat": "-25.4444",
+    "long": "-49.2881",
+    }).then(res => setMuseum(res.data.results));
+
+    api.post(`/recommender/${id}/park`, {
+    "lat": "-25.4444",
+    "long": "-49.2881",
+    }).then(res => setPark(res.data.results));
+
+    // const filtered = restaurant.filter(place => 
+    //   place.recomendar
+    // ); 
+
+    // setFilteredPlaces(filtered);
+
+    if(!restaurant)
+        return setLoading(true);
+    if(page > 1){
+        // setPlaces(oldValue => [...oldValue, ...data.results])
+        // setFilteredPlaces(oldValue => [...oldValue, ... data.results])
+    }else{
+        // setPlaces(data.results);
+        // setFilteredPlaces(restaurant);
+    }
+    setLoading(false);
+    setLoadingMore(false);
     }
 
     function handleFetchMore(distance: number) {
-        if(distance < 1)
-            return;
+      // if(distance < 1)
+      //     return;
 
-        setLoadingMore(true);
-        setPage(oldValue => oldValue + 1);
-        fetchPlaces();
+      // setLoadingMore(true);
+      // setPage(oldValue => oldValue + 1);
+      // fetchPlaces();
     }
-
+ 
     function handlePlaceSelected(place: PlaceProps){
       navigation.navigate('PlaceDetail', {place});
       console.log("place:" + place.place_id)
     }
 
-    useEffect(() => {
-        async function fetchEnviroment() {
-            // const { data } = await api.get(
-            //     'places_environments'
-            // );
-            const data = placeType.places_environments;
-            setEnviroments([
-                {
-                    key: 'all',
-                    title: 'Todos' 
-                },
-                ...data
-            ]);
-        }
-        
-        fetchEnviroment();
-
-    }, [])
-
-    useEffect(() => {
-        fetchPlaces();
-    }, [])
-
     if(loading){
-        return <Load />
+      return <Load />
     }
+
     return(
         <View style={styles.container}>
             <View style={styles.header}>
                 <Header/>
                 
                 <Text style={styles.title}>
-                    Que tipo de local
+                  Que tipo de local
                 </Text>
                 <Text style={styles.subtitle}>
                     você deseja visitar?
@@ -175,7 +226,7 @@ export function PlaceSelect(){
                       <PlaceCardPrimary 
                           data={item} 
                           onPress={() => handlePlaceSelected(item)}
-                      />
+                        />
                       )}
                       showsVerticalScrollIndicator={false}
                       numColumns={1}   
@@ -183,11 +234,11 @@ export function PlaceSelect(){
                       onEndReached={({ distanceFromEnd }) => 
                           handleFetchMore(distanceFromEnd)
                       }
-                      ListFooterComponent={
-                          loadingMore 
-                          ? <ActivityIndicator color={colors.main} />
-                          : <></>
-                      }
+                      // ListFooterComponent={
+                      //     loadingMore 
+                      //     ? <ActivityIndicator color={colors.main} />
+                      //     : <></>
+                      // }
                     />
             </View>
 

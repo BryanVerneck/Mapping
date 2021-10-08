@@ -36,7 +36,7 @@ export function UserIdentification(){
       nome: name,
       senha: senha,
       senha_confirma: confirmarSenha,
-      email: email,
+      email: email.toLowerCase(),
       data_nascimento: newDate,
       sexo: sexo,
       id_profissao: professionIdSelected,

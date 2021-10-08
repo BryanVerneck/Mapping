@@ -8,10 +8,6 @@ import { Alert } from 'react-native';
 
 const api = axios.create({
     baseURL: 'https://api-mapping.herokuapp.com',
-    headers: {
-      'Content-Type': 'application/json',
-        Accept: 'application/json',
-    },
 });
 
 api.interceptors.response.use(

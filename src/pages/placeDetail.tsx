@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import { StyleSheet, Text, View, TouchableOpacity, Modal,  } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Modal, Alert,  } from 'react-native';
 import { getBottomSpace } from 'react-native-iphone-x-helper';
 import { useRoute } from '@react-navigation/core';
 import colors from '../../styles/colors';
@@ -14,6 +14,7 @@ import MapView, { Marker } from 'react-native-maps';
 import herokuApiSauce from '../services/HerokuAPISauce';
 import { CurrentUserData } from '../contexts/CurrentUserContext';
 import herokuApi from '../services/HerokuAPI';
+import * as Location from 'expo-location'
 
 const rating = ratingOptions;
 
@@ -45,9 +46,10 @@ export function PlaceDetail(){
   const [reviewed, setReviewed] = useState(false);
   const [rateIdSelected, setRateIdSelected] = useState('');
   const [rateOptions, setRateOptions] = useState(rating.options);
-  const [showDialog, setShowDialog] = useState(false)
+  const [showDialog, setShowDialog] = useState(false);
   const route = useRoute();
   const { place } = route.params as Params;
+  
   
   async function submitRate(){
     await herokuApiSauce.post('/reviews/addReview', {
@@ -57,7 +59,7 @@ export function PlaceDetail(){
       nota: rateIdSelected,
       nome_estabelecimento: place.name,
       localizacao: place.geometry.location.lat + "|" + place.geometry.location.lng
-    }).then(response => console.log(response)).catch(e => console.log(e.data.message));
+    }).then(response => {console.log(response), Alert.alert("Avaliação registrada com sucesso! 😀")}).catch(e => {console.log(e.data.message), Alert.alert("Ocorreu um erro ao tentar registar sua avaliação 😞")});
     setShowDialog(false)
     await AsyncStorage.setItem('@mapping:placeRate', rateIdSelected);
     // getReviews(parseInt(id));
@@ -92,7 +94,6 @@ export function PlaceDetail(){
         pinColor = {colors.main}
         title={place.name}
         description={place.types[0].toString()}
-        onPress={() => window.open("", "_blank")}
         />
       </MapView>
       <View style={styles.container}>

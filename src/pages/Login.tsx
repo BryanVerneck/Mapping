@@ -37,13 +37,12 @@ export function Login(){
     await api.post('/user/login', { 
       email: email,
       senha: password,
-    }).then(response => {
-      navigation.navigate('PlaceSelect');
-      user = jwt(response.data.userData);
+    }).then(async response => {
+      user = await jwt(response.data.userData);
+      await AsyncStorage.setItem('@mapping:CurrentUserId', user.userData.id);
+      await AsyncStorage.setItem('@mapping:user', user.userData.nome);
       setId(user.userData.id);
-      console.log(user.userData.id)
-      AsyncStorage.setItem('@mapping:userToken', JSON.stringify(response.data.userData));
-      AsyncStorage.setItem('@mapping:CurrentUserId', id);
+      navigation.navigate('PlaceSelect');
     }).catch(() => {
         Alert.alert("Login e/ou senha incorreto(s) 😕")}
       );

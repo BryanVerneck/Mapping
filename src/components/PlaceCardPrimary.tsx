@@ -14,6 +14,7 @@ interface PlaceProps extends RectButtonProps {
         photos: {
           photo_reference: string;
         };
+      recomendar: string;    
     }
 } 
 
@@ -21,7 +22,7 @@ interface PlaceProps extends RectButtonProps {
 
 export const PlaceCardPrimary = ({ data, ...rest} : PlaceProps) => {
     return(
-        <RectButton style={styles.container} {...rest}>
+        <RectButton style={data.recomendar == "True" ? styles.RecomendationContainer : styles.container} {...rest}>
             
             <Image style={styles.image} source={{ uri: data.icon }} />
     
@@ -34,14 +35,25 @@ export const PlaceCardPrimary = ({ data, ...rest} : PlaceProps) => {
 
 const styles = StyleSheet.create({
     container: {
-        flexDirection: 'row',
-        maxWidth: '100%',
-        backgroundColor: colors.shape,
-        borderRadius: 5,
-        paddingVertical: 15,
-        alignItems: 'flex-start',
-        paddingHorizontal: 10,
-        margin: 5
+      flexDirection: 'row',
+      maxWidth: '100%',
+      backgroundColor: colors.shape,
+      borderRadius: 5,
+      paddingVertical: 15,
+      alignItems: 'flex-start',
+      paddingHorizontal: 10,
+      margin: 5
+    },
+    RecomendationContainer : {
+      flexDirection: 'row',
+      maxWidth: '100%',
+      backgroundColor: colors.main,
+      borderRadius: 5,
+      paddingVertical: 15,
+      alignItems: 'flex-start',
+      paddingHorizontal: 10,
+      margin: 5,
+      borderWidth: 1
     },
     text: {
         color: colors.green_dark,

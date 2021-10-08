@@ -26,7 +26,9 @@ export function Registration(){
     if(senha !== confirmarSenha){
       return Alert.alert('Sua senha e senha de confirmação precisam ser iguais 😯')
     }
-
+    if(senha.length < 5){
+      return Alert.alert('Sua senha deve conter no mínimo 5 caracteres')
+    }
     else{
       console.log("Date: " + newDate);
       navigation.navigate('Preferences');
@@ -58,12 +60,13 @@ export function Registration(){
               <Input placeholder="Senha" type="visible-password" onChange={(value: string) => setSenha(value)}/>
               <Input placeholder="Confirmar senha" type="visible-password" onChange={(value: string) => setConfirmarSenha(value)}/>
               <View style={styles.genderContainer}>
-                <Picker style={{width: '70%', height: 50, color: colors.heading, marginTop: 50}}
+                <Picker style={{width: '70%', height: 50, color: colors.heading, marginTop: 50, textAlign: 'center'}}
                   selectedValue={sexo}
                   onValueChange={(item)=>{setSexo(item)}}
                 >
                   <Picker.Item key={0} value="M" label="Sexo masculino"/>
                   <Picker.Item key={1} value="F" label="Sexo feminino"/>
+                  <Picker.Item key={3} value="F" label="Outros" style={{textAlign: 'center', backgroundColor: 'black'}}/>
                 </Picker>
               </View>
               <InputButton
