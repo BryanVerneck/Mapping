@@ -8,6 +8,7 @@ export interface UserProps {
     id_profissao: string,
     nome: string,
     senha: string,
+    confirmarSenha: string,
     sexo: string,
   },
 }

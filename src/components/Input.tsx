@@ -2,14 +2,15 @@ import React, { useState } from 'react'
 import { TextInput, StyleSheet } from 'react-native'
 import colors from '../../styles/colors';
 
-interface PlaceholderProps {
+interface PlaceholderProps extends TextInput {
   placeholder: string;
   onChange: any;
   type: any;
   length: number;
+  defaultValue: any;
 }
 
-export default function Input({ placeholder, onChange, type, length } : PlaceholderProps){
+export default function Input({ placeholder, onChange, type, length, defaultValue } : PlaceholderProps){
   const [ isFocused, setIsFocused ] = useState(false);
   const [ isFilled, setIsFilled ] = useState(false);
   const [ name, setName ] = useState<string>();
@@ -35,6 +36,7 @@ export default function Input({ placeholder, onChange, type, length } : Placehol
       onChangeText={onChange}
       keyboardType={type}
       maxLength={length}
+      defaultValue={defaultValue}
       // secureTextEntry={true}
     />
   )

@@ -1,6 +1,6 @@
 import React from  'react';
 
-import { StyleSheet, Text, Image } from 'react-native';
+import { StyleSheet, Text, Image, View } from 'react-native';
 
 import { RectButton, RectButtonProps } from 'react-native-gesture-handler';
 import colors from '../../styles/colors';
@@ -22,13 +22,16 @@ interface PlaceProps extends RectButtonProps {
 
 export const PlaceCardPrimary = ({ data, ...rest} : PlaceProps) => {
     return(
-        <RectButton style={data.recomendar == "True" ? styles.RecomendationContainer : styles.container} {...rest}>
-            
-            <Image style={styles.image} source={{ uri: data.icon }} />
-    
-            <Text style={styles.text}>
-                {data.name}
-            </Text>
+        <RectButton {...rest}>
+            <View style={data.recomendar == "True" ? styles.RecomendationContainer : styles.container}>
+
+              <Image style={styles.image} source={{ uri: data.icon }} />
+      
+              <Text style={styles.text}>
+                  {data.name}
+              </Text>
+
+            </View>
         </RectButton>
     )
 }
@@ -37,23 +40,24 @@ const styles = StyleSheet.create({
     container: {
       flexDirection: 'row',
       maxWidth: '100%',
-      backgroundColor: colors.shape,
       borderRadius: 5,
       paddingVertical: 15,
       alignItems: 'flex-start',
       paddingHorizontal: 10,
-      margin: 5
+      marginBottom: 5,
+      borderWidth: 1,
+      borderColor: colors.shape
     },
     RecomendationContainer : {
       flexDirection: 'row',
       maxWidth: '100%',
-      backgroundColor: colors.main,
       borderRadius: 5,
       paddingVertical: 15,
       alignItems: 'flex-start',
       paddingHorizontal: 10,
-      margin: 5,
-      borderWidth: 1
+      marginBottom: 5,
+      borderWidth: 1,
+      borderColor: colors.main,
     },
     text: {
         color: colors.green_dark,
@@ -65,5 +69,5 @@ const styles = StyleSheet.create({
         width: 20,
         height: 20,
         marginTop: 5
-    }
+    },
 })

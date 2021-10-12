@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, StyleSheet } from 'react-native';
+import { Text, StyleSheet, View } from 'react-native';
 import { RectButton, RectButtonProps } from 'react-native-gesture-handler';
 
 import colors from '../../styles/colors';
@@ -17,33 +17,38 @@ export function EnviromentButton({
 }: EnviromentButtonProps){
     return(
       <RectButton 
-        style={[
+        {...rest}>
+        <View style={[
             styles.container,
             active && styles.containerActive
-            ]} {...rest}>
-        <Text 
-            style={[
-                styles.text,
-                active && styles.textActive
-                ]}>
-            { title }
-        </Text>
+            ]}>
+          <Text 
+              style={[
+                  styles.text,
+                  active && styles.textActive
+                  ]}>
+              { title }
+          </Text>
+        </View>
       </RectButton>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: colors.shape,
+        backgroundColor: colors.white,
         width: 100,
         height: 40,
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 30,
         marginHorizontal: 5,
+        borderWidth: 1,
+        borderColor: colors.shape
     },
     containerActive: {
-        backgroundColor: colors.green_light
+        backgroundColor: colors.green_light,
+        borderWidth: 0
     },
     text: {
         color: colors.heading,

@@ -1,21 +1,22 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { SafeAreaView, View, StyleSheet, Text, Alert, KeyboardAvoidingView, Platform, Keyboard, AsyncStorage} from 'react-native';
+import { SafeAreaView, View, StyleSheet, Text, Alert, KeyboardAvoidingView, Platform, Keyboard, AsyncStorage, Image} from 'react-native';
 import Input from '../components/Input';
 import {Button} from '../components/Button';
 import colors from '../../styles/colors';
 import fonts from '../../styles/fonts';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
-import herokuApiSauce from '../services/HerokuAPISauce';
 import api from '../services/api';
 import jwt from 'jwt-decode';
 import { CurrentUserData } from '../contexts/CurrentUserContext';
 import { UserProps } from '../models/UserProps';
+import { secondsToMinutes } from 'date-fns/esm';
+import newIcon from '../../assets/newIcon.png';
 
 export function Login(){
   let user: UserProps;
-  const { id, setId } = useContext(CurrentUserData);
-  const [email, setEmail] = useState('');
+  const { setId, setEmail, setNewDate, setNome, setPreferenceSelected, setProfessionIdSelected, setSenha, setSexo } = useContext(CurrentUserData);
+  const [emailInput, setEmailInput] = useState('');
   const [password, setPassword] = useState('');
 
   const navigation = useNavigation();
@@ -35,13 +36,21 @@ export function Login(){
 
   async function handleLogin(){
     await api.post('/user/login', { 
-      email: email,
+      email: emailInput,
       senha: password,
     }).then(async response => {
       user = await jwt(response.data.userData);
+      await AsyncStorage.setItem('@mapping:Token', response.data.userData);
       await AsyncStorage.setItem('@mapping:CurrentUserId', user.userData.id);
       await AsyncStorage.setItem('@mapping:user', user.userData.nome);
       setId(user.userData.id);
+      setSenha(user.userData.senha)
+      setEmail(user.userData.email);
+      setNewDate(user.userData.data_nascimento);
+      setSexo(user.userData.sexo);
+      setNome(user.userData.nome);
+      setProfessionIdSelected(user.userData.id_profissao)
+      // setPreferenceSelected(user.userData.id);
       navigation.navigate('PlaceSelect');
     }).catch(() => {
         Alert.alert("Login e/ou senha incorreto(s) 😕")}
@@ -53,7 +62,7 @@ export function Login(){
   }
 
   function handleEmailInputChange(value: string){
-    setEmail(value);
+    setEmailInput(value);
   }
 
   function handlePasswordInputChange(value: string){
@@ -69,14 +78,15 @@ export function Login(){
           <View style={styles.content}>
             <View style={styles.form}>
               <View style={styles.header}>
-                <Text style={styles.title}>
+                {/* <Text style={styles.title}>
                     Olá, seja muito bem-vindo!
-                </Text>
+                </Text> */}
+                <Image source={newIcon} />
               </View>
               <Input placeholder="E-mail de usuário" onChange={handleEmailInputChange} type="email-address" length={50}/>
               <Input placeholder="Senha" onChange={handlePasswordInputChange} type="visible-password" length={50}/>
               <View style={styles.loginButton}>
-                { email && password ? 
+                { emailInput && password ? 
                 <Button title="Login" alt={false} onPress={handleLogin}/> 
                 :
                 <Button title="Login" alt = {false} onPress={handleLogin} disabled/>
@@ -119,7 +129,8 @@ const styles = StyleSheet.create({
       fontSize: 44
   },
   header: {
-      alignItems: 'center'
+      alignItems: 'center',
+      width: 285
   },
   title: {
       fontSize: 24,

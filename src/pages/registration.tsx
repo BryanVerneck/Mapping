@@ -30,7 +30,6 @@ export function Registration(){
       return Alert.alert('Sua senha deve conter no mínimo 5 caracteres')
     }
     else{
-      console.log("Date: " + newDate);
       navigation.navigate('Preferences');
     }
   }
@@ -66,7 +65,7 @@ export function Registration(){
                 >
                   <Picker.Item key={0} value="M" label="Sexo masculino"/>
                   <Picker.Item key={1} value="F" label="Sexo feminino"/>
-                  <Picker.Item key={3} value="F" label="Outros" style={{textAlign: 'center', backgroundColor: 'black'}}/>
+                  <Picker.Item key={2} value="Outros" label="Outros" style={{textAlign: 'center', backgroundColor: 'black'}}/>
                 </Picker>
               </View>
               <InputButton

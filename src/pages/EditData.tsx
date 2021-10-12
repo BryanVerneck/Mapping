@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { SafeAreaView, View, StyleSheet, Text, Alert, KeyboardAvoidingView, Platform, Keyboard, TouchableWithoutFeedback} from 'react-native';
 import colors from '../../styles/colors';
 import fonts from '../../styles/fonts';
@@ -8,38 +8,58 @@ import Input from '../components/Input';
 import DateTimePicker from '@react-native-community/datetimepicker'
 import { InputButton } from '../components/InputButton';
 import { Picker } from '@react-native-picker/picker';
-import { Data } from '../contexts/userDataContext';
+import herokuApiSauce from '../services/HerokuAPISauce';
+import { CurrentUserData } from '../contexts/CurrentUserContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export function EditData(){
-  const { email, senha, confirmarSenha, sexo, dataNascimento, newDate, setEmail, setSenha, setConfirmarSenha, setSexo, setdataNascimento, setNewDate } = useContext(Data);
+  const { id, email, senha, confirmarSenha, sexo, newDate, preferenceSelected, professionIdSelected, nome, 
+    setEmail, setSenha, setConfirmarSenha, setSexo, setNewDate, setNome } = useContext(CurrentUserData);
+  let emailInput = email;
+  let senhaInput = senha;
+  let sexoInput = sexo;
   const [ showDate, setShowDate] = useState(false);
   const [ data, setData ] = useState(new Date())
+  const [ token, setToken ] = useState('')
   let mounth = data.getMonth() + 1;
 
-  const navigation = useNavigation();
-
-  function handleSubmit(){
-    // if(!email){
-    //   return Alert.alert('Precisamos que você preencha todos os dados 🙁')
-    // }
-    // console.log(email);
-    if(senha !== confirmarSenha){
-      return Alert.alert('Sua senha e senha de confirmação precisam ser iguais 😯')
+  useEffect(() => {
+    async function loadStorageToken(){
+      const tkn = await AsyncStorage.getItem('@mapping:Token');
+      setToken(tkn || '');  
     }
+    loadStorageToken();
+  }, [])
 
-    else{
-      console.log("Date: "+ newDate);
-      navigation.navigate('Preferences');
-    }
-  }
-
-  function showDatePicker(){
-    setShowDate(!showDate);
+  async function handleSubmit(){
+    await herokuApiSauce.post(`/user/updateUser/${id}`, {
+      senha: senhaInput,
+      senha_confirma: senhaInput,
+      email: emailInput.toLowerCase(),
+      sexo: sexoInput,
+      id_profissao: professionIdSelected,
+      gostos_pessoais: [4, 6, 7, 8, 12, 17]
+    },
+    {
+      headers: {
+        Authorization: token
+      }
+    }).then(response => {
+      // if(response.status == 200 || response.status == 201){
+        console.log(response)
+        setEmail(emailInput);
+        Alert.alert('Dados alterados com sucesso :)')
+      // }
+    }).catch(() => Alert.alert("Ocorreu um erro :("));
   }
 
   useEffect(()=> {
-    setNewDate(data.getFullYear() + '-' + mounth.toString().padStart(2, '0') + '-' + data.getDate().toString().padStart(2, '0'))
+    setNewDate(data.getFullYear() + '-' + mounth.toString().padStart(2, '0') + '-' + data.getDate().toString().padStart(2, '0'));
   }, [])
+
+  useEffect(()=> {
+    console.log(emailInput);
+  }, [emailInput])
 
   return(
       <SafeAreaView style={styles.container}>
@@ -54,19 +74,21 @@ export function EditData(){
                     Editar
                 </Text>
               </View>
-              <Input placeholder="E-mail" type="email-address" onChange={(value: string) => setEmail(value)}/>
-              <Input placeholder="Senha" type="visible-password" onChange={(value: string) => setSenha(value)}/>
-              <Input placeholder="Confirmar senha" type="visible-password" onChange={(value: string) => setConfirmarSenha(value)}/>
+              
+              <Input placeholder="E-mail" type="email-address" defaultValue={email} onChange={(value: string) => emailInput = value}/>
+              <Input placeholder="Senha" type="visible-password" onChange={(value: string) => senhaInput = value}/>
+              <Input placeholder="Confirmar senha" type="visible-password" onChange={(value: string) => senhaInput = value}/>
               <View style={styles.genderContainer}>
                 <Picker style={{width: '70%', height: 50, color: colors.heading, marginTop: 50}}
                   selectedValue={sexo}
-                  onValueChange={(item)=>{setSexo(item)}}
+                  onValueChange={(item)=>{setSexo(item), sexoInput = item}}
                 >
                   <Picker.Item key={0} value="M" label="Sexo masculino"/>
                   <Picker.Item key={1} value="F" label="Sexo feminino"/>
+                  <Picker.Item key={2} value="Outros" label="Outros" style={{textAlign: 'center', backgroundColor: 'black'}}/>
                 </Picker>
               </View>
-              <InputButton
+              {/* <InputButton
                 title={"Data de nascimento: " + dataNascimento}
                 onPress={showDatePicker}
                 />
@@ -87,15 +109,13 @@ export function EditData(){
                     }
                  }}
                 />
-              )}
+              )} */}
 
               <View style={styles.loginButton}>
-                {email && senha && confirmarSenha && dataNascimento && sexo ? 
-                <Button title="Confirmar" alt = {false} onPress={handleSubmit} /> 
-                : 
-                <Button title="Confirmar" alt = {false} disabled style={styles.buttonDisabled} />}
+                <Button title="Confirmar" alt = {false} onPress={handleSubmit}/> 
               </View>
             </View>
+            
           </View>
         </TouchableWithoutFeedback>
       </KeyboardAvoidingView>

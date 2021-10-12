@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import { StyleSheet, Text, View, TouchableOpacity, Modal, Alert,  } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Modal, Alert, } from 'react-native';
 import { getBottomSpace } from 'react-native-iphone-x-helper';
 import { useRoute } from '@react-navigation/core';
 import colors from '../../styles/colors';
@@ -50,7 +50,6 @@ export function PlaceDetail(){
   const route = useRoute();
   const { place } = route.params as Params;
   
-  
   async function submitRate(){
     await herokuApiSauce.post('/reviews/addReview', {
       descricao: "dummy",
@@ -58,7 +57,8 @@ export function PlaceDetail(){
       id_usuario: id,
       nota: rateIdSelected,
       nome_estabelecimento: place.name,
-      localizacao: place.geometry.location.lat + "|" + place.geometry.location.lng
+      localizacao: place.geometry.location.lat + "|" + place.geometry.location.lng,
+      types: place.types,
     }).then(response => {console.log(response), Alert.alert("Avaliação registrada com sucesso! 😀")}).catch(e => {console.log(e.data.message), Alert.alert("Ocorreu um erro ao tentar registar sua avaliação 😞")});
     setShowDialog(false)
     await AsyncStorage.setItem('@mapping:placeRate', rateIdSelected);
