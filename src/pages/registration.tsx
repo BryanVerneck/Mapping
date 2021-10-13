@@ -14,15 +14,18 @@ export function Registration(){
   const { email, senha, confirmarSenha, sexo, dataNascimento, newDate, setEmail, setSenha, setConfirmarSenha, setSexo, setdataNascimento, setNewDate } = useContext(Data);
   const [ showDate, setShowDate] = useState(false);
   const [ data, setData ] = useState(new Date())
+  let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
   let mounth = data.getMonth() + 1;
 
   const navigation = useNavigation();
 
-  function handleSubmit(){
-    // if(!email){
+  function handleSubmit(email: string){
+    if (reg.test(email) === false) {
+      return Alert.alert("Formato de e-mail inválido, tente novamente")
+    }
+    // if(!email || !senha || !confirmarSenha || !sexo || !newDate){
     //   return Alert.alert('Precisamos que você preencha todos os dados 🙁')
     // }
-    // console.log(email);
     if(senha !== confirmarSenha){
       return Alert.alert('Sua senha e senha de confirmação precisam ser iguais 😯')
     }
@@ -75,6 +78,7 @@ export function Registration(){
               {showDate && (
                 <DateTimePicker
                   testID="dateTimePicker"
+                  maximumDate={new Date(Date.now() - 86400000)}
                   value={data}
                   mode="date"
                   is24Hour={true}
@@ -93,7 +97,7 @@ export function Registration(){
 
               <View style={styles.loginButton}>
                 {email && senha && confirmarSenha && dataNascimento && sexo ? 
-                <Button title="Confirmar" alt = {false} onPress={handleSubmit} /> 
+                <Button title="Confirmar" alt = {false} onPress={() => handleSubmit(email) } /> 
                 : 
                 <Button title="Confirmar" alt = {false} disabled style={styles.buttonDisabled} />}
               </View>

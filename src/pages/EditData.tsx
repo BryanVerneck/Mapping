@@ -57,10 +57,6 @@ export function EditData(){
     setNewDate(data.getFullYear() + '-' + mounth.toString().padStart(2, '0') + '-' + data.getDate().toString().padStart(2, '0'));
   }, [])
 
-  useEffect(()=> {
-    console.log(emailInput);
-  }, [emailInput])
-
   return(
       <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView 

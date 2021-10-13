@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { StyleSheet, Text, View, TouchableOpacity, Modal, Alert, } from 'react-native';
 import { getBottomSpace } from 'react-native-iphone-x-helper';
 import { useRoute } from '@react-navigation/core';
@@ -68,11 +68,16 @@ export function PlaceDetail(){
   function getReviews(userId: number) {
     herokuApi.get(`user/reviews/${userId}`)
     .then(response => {
-      if(response.data.userReviews.id_estabelecimento == place.place_id){
+      console.log(response)
+      if(response.data.userReviews.id_estabelecimento_places == place.place_id){
         setReviewed(true);
       }
     })  
   }
+
+  useEffect(() => {
+    console.log(id)
+  }, [])
 
   function handleRateSelected(item: RatingProps) {
     console.log(item.value);

@@ -31,7 +31,6 @@ const styles = StyleSheet.create({
     color: colors.green_dark,
     fontFamily: fonts.heading,
     marginVertical: 5,
-    marginLeft: 10,
     textAlign: 'center'
   },
   image: {

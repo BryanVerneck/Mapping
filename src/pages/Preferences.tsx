@@ -115,7 +115,7 @@ export function Preferences(){
                     onEndReachedThreshold={0.1}                          
                   />
               <View style={{marginVertical: 10}}>
-                <Text style={styles.category}>Bares</Text>
+                <Text style={styles.category}>Gêneros musicais</Text>
               </View>
               <FlatList
                 data={filter3}

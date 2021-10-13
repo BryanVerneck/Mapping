@@ -35,6 +35,9 @@ export function Login(){
   // }, []);
 
   async function handleLogin(){
+    if(!emailInput || password){
+      return Alert.alert("Insira seu email e senha")
+    }
     await api.post('/user/login', { 
       email: emailInput,
       senha: password,
@@ -84,12 +87,12 @@ export function Login(){
                 <Image source={newIcon} />
               </View>
               <Input placeholder="E-mail de usuário" onChange={handleEmailInputChange} type="email-address" length={50}/>
-              <Input placeholder="Senha" onChange={handlePasswordInputChange} type="visible-password" length={50}/>
+              <Input placeholder="Senha" onChange={handlePasswordInputChange} type="default" length={50} />
               <View style={styles.loginButton}>
                 { emailInput && password ? 
                 <Button title="Login" alt={false} onPress={handleLogin}/> 
                 :
-                <Button title="Login" alt = {false} onPress={handleLogin} disabled/>
+                <Button title="Login" alt = {false} onPress={handleLogin}/>
                 }
               </View>
               <View style={styles.RegisterButton}>

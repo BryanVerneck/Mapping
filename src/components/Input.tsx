@@ -37,7 +37,7 @@ export default function Input({ placeholder, onChange, type, length, defaultValu
       keyboardType={type}
       maxLength={length}
       defaultValue={defaultValue}
-      // secureTextEntry={true}
+      secureTextEntry={true}
     />
   )
 }
