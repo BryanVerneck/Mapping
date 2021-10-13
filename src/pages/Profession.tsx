@@ -86,7 +86,6 @@ export function Profession(){
               
               <View style={styles.footer}>
                 {professionSelected ? <Button alt={false} title="Confirmar" onPress={handleSubmit}/> : <Button alt={false} title="Confirmar" onPress={handleSubmit} disabled style={styles.buttonDisabled}/>}
-                
               </View>
               </View>
           </View>
@@ -99,7 +98,7 @@ export function Profession(){
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: '100%',
+    width: 400,
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 40,
@@ -141,7 +140,8 @@ const styles = StyleSheet.create({
   },
   footer: {
     width: '100%',
-    paddingHorizontal: 20  
+    paddingHorizontal: 20,
+    marginTop: 20 
   },
   checkbox: {
       alignSelf: "center",
@@ -182,7 +182,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     paddingHorizontal: 10,
     margin: 5,
-    borderWidth: 1
+    borderWidth: 1,
   },
   buttonDisabled: {
     backgroundColor: colors.gray,

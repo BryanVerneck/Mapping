@@ -39,7 +39,7 @@ export function Login(){
       return Alert.alert("Insira seu email e senha")
     }
     await api.post('/user/login', { 
-      email: emailInput,
+      email: emailInput.toLowerCase(),
       senha: password,
     }).then(async response => {
       user = await jwt(response.data.userData);
