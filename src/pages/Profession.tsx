@@ -98,7 +98,7 @@ export function Profession(){
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: 400,
+    width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 40,
@@ -157,10 +157,11 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
   list: {
-    flex: 1,
+    // flex: 1,
     paddingHorizontal: 5,
     justifyContent: 'center',
-    marginTop: 20
+    marginTop: 20,
+    height: 450
   },
   professionsContainer: {
     flexDirection: 'row',
