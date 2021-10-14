@@ -70,7 +70,7 @@ export function Preferences(){
   if(loading){
     return <Load />
   }
-  
+
   return(
     <View style={styles.container}>
       <View style={styles.content}>
@@ -190,7 +190,7 @@ const styles = StyleSheet.create({
     textAlign: 'center', 
     color: colors.main,
     fontFamily: fonts.heading,
-},
+  },
   footer: {
     width: '100%',
     paddingHorizontal: 20,

@@ -58,41 +58,35 @@ export function Profession(){
     }
 
     return(
-      <SafeAreaView style={styles.container}>
-      <KeyboardAvoidingView 
-                style={styles.container}
-                behavior={ Platform.OS === 'ios' ? 'padding' : 'height'}>
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <View style={styles.content}>
-            <View style={styles.form}>
-              <View style={styles.header}>
-                <Text style={styles.title}>
-                    Com qual dessas áreas você mais se identifica?
-                </Text>
-              </View>
-              <View style={styles.list}>
-                <FlatList 
-                data={professions}
-                keyExtractor={(item) => String(item.id)}
-                renderItem={({ item }) => (
-                    <ProfessionsCard data={item} onPress={() => handleProfessionSelected(item)} style={ 
-                      professionIdSelected === item.id ? styles.professionSelected : styles.professionsContainer } />
-                  )}
-                    showsVerticalScrollIndicator={false}
-                    numColumns={1}   
-                    onEndReachedThreshold={0.1}                          
-                  />
-              </View>
-              
-              <View style={styles.footer}>
-                {professionSelected ? <Button alt={false} title="Confirmar" onPress={handleSubmit}/> : <Button alt={false} title="Confirmar" onPress={handleSubmit} disabled style={styles.buttonDisabled}/>}
-              </View>
-              </View>
-          </View>
-        </TouchableWithoutFeedback>
-      </KeyboardAvoidingView>
-    </SafeAreaView>
-    )
+      <View style={styles.container}>
+        <View style={styles.content}>
+          <View style={styles.form}>
+            <View style={styles.header}>
+              <Text style={styles.title}>
+                  Com qual dessas áreas você mais se identifica?
+              </Text>
+            </View>
+            <View style={styles.list}>
+              <FlatList 
+              data={professions}
+              keyExtractor={(item) => String(item.id)}
+              renderItem={({ item }) => (
+                  <ProfessionsCard data={item} onPress={() => handleProfessionSelected(item)} style={ 
+                    professionIdSelected === item.id ? styles.professionSelected : styles.professionsContainer } />
+                )}
+                  showsVerticalScrollIndicator={false}
+                  numColumns={1}   
+                  onEndReachedThreshold={0.1}                          
+                />
+            </View>
+            
+            <View style={styles.footer}>
+              {professionSelected ? <Button alt={false} title="Confirmar" onPress={handleSubmit}/> : <Button alt={false} title="Confirmar" onPress={handleSubmit} disabled style={styles.buttonDisabled}/>}
+            </View>
+            </View>
+        </View>
+      </View>
+  )
 }
 
 const styles = StyleSheet.create({
@@ -101,17 +95,17 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
-    marginVertical: 40
+    marginVertical: 50
   },
   content: {
-    flex: 1,
-    width: '100%'
+      flex: 1,
+      width: '100%'
   },
   form: {
-    flex: 1,
-    justifyContent: 'center',
-    paddingHorizontal: 54,
-    alignItems: 'center',
+      flex: 1,
+      justifyContent: 'center',
+      paddingHorizontal: 54,
+      alignItems: 'center',
   },
   emoji: {
       fontSize: 44
@@ -120,14 +114,14 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   input: {
-    borderBottomWidth: 1,
-    borderColor: colors.gray,
-    color: colors.heading,
-    width: '100%',
-    fontSize: 18,
-    marginTop: 50,
-    padding: 10,
-    textAlign: 'center'
+      borderBottomWidth: 1,
+      borderColor: colors.gray,
+      color: colors.heading,
+      width: '100%',
+      fontSize: 18,
+      marginTop: 50,
+      padding: 10,
+      textAlign: 'center'
   },
   title: {
     fontSize: 24,
@@ -140,7 +134,6 @@ const styles = StyleSheet.create({
   footer: {
     width: '100%',
     paddingHorizontal: 20,
-    marginTop: 20  
   },
   checkbox: {
       alignSelf: "center",
@@ -159,7 +152,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 5,
     justifyContent: 'center',
-    marginTop: 20,
+    marginTop: 40,
   },
   professionsContainer: {
     flexDirection: 'row',
