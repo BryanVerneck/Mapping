@@ -23,9 +23,9 @@ export function Registration(){
     if (reg.test(email) === false) {
       return Alert.alert("Formato de e-mail inválido, tente novamente")
     }
-    // if(!email || !senha || !confirmarSenha || !sexo || !newDate){
-    //   return Alert.alert('Precisamos que você preencha todos os dados 🙁')
-    // }
+    if(!email || !senha || !confirmarSenha || !sexo || !newDate){
+      return Alert.alert('Precisamos que você preencha todos os dados 🙁')
+    }
     if(senha !== confirmarSenha){
       return Alert.alert('Sua senha e senha de confirmação precisam ser iguais 😯')
     }
@@ -68,7 +68,7 @@ export function Registration(){
                 >
                   <Picker.Item key={0} value="M" label="Sexo masculino"/>
                   <Picker.Item key={1} value="F" label="Sexo feminino"/>
-                  <Picker.Item key={2} value="Outros" label="Outros" style={{textAlign: 'center', backgroundColor: 'black'}}/>
+                  <Picker.Item key={2} value="O" label="Outros" style={{textAlign: 'center', backgroundColor: 'black'}}/>
                 </Picker>
               </View>
               <InputButton
@@ -87,7 +87,7 @@ export function Registration(){
                     setShowDate(!showDate);
                     if (date) {
                       const temp = date.toString();
-                      setdataNascimento(temp.slice(8, 10) + '/' + temp.slice(4, 7) + '/' + temp.slice(11, 16))
+                      setdataNascimento(temp.slice(8, 10) + ' / ' + temp.slice(4, 7) + ' / ' + temp.slice(11, 16))
                       mounth = data.getMonth() + 1;
                       setNewDate(date.getFullYear() + '-' + mounth.toString().padStart(2, '0') + '-' + date.getDate().toString().padStart(2, '0'))
                     }

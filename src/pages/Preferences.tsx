@@ -41,6 +41,7 @@ export function Preferences(){
 
   useEffect(() => {
     fetchPlaces();
+    setPreferenceSelected([]);
     LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
   }, [])
 

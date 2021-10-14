@@ -15,7 +15,7 @@ import newIcon from '../../assets/newIcon.png';
 
 export function Login(){
   let user: UserProps;
-  const { setId, setEmail, setNewDate, setNome, setPreferenceSelected, setProfessionIdSelected, setSenha, setSexo } = useContext(CurrentUserData);
+  const { setId, setEmail, setNewDate, setNome, setProfessionIdSelected, setSenha, setSexo, setConfirmarSenha } = useContext(CurrentUserData);
   const [emailInput, setEmailInput] = useState('');
   const [password, setPassword] = useState('');
 
@@ -47,7 +47,8 @@ export function Login(){
       await AsyncStorage.setItem('@mapping:CurrentUserId', user.userData.id);
       await AsyncStorage.setItem('@mapping:user', user.userData.nome);
       setId(user.userData.id);
-      setSenha(user.userData.senha)
+      setSenha(user.userData.senha);
+      setConfirmarSenha(user.userData.senha);
       setEmail(user.userData.email);
       setNewDate(user.userData.data_nascimento);
       setSexo(user.userData.sexo);
@@ -107,7 +108,6 @@ export function Login(){
         </TouchableWithoutFeedback>
       </KeyboardAvoidingView>
     </SafeAreaView>
-    
   )
 }
 

@@ -45,7 +45,8 @@ export function Profession(){
     }
 
     useEffect(() => {
-        fetchProfessions();
+      setProfessionIdSelected('');
+      fetchProfessions();
     }, [])
 
     if(loading){

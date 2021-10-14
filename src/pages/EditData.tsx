@@ -17,6 +17,7 @@ export function EditData(){
     setEmail, setSenha, setConfirmarSenha, setSexo, setNewDate, setNome } = useContext(CurrentUserData);
   let emailInput = email;
   let senhaInput = senha;
+  let confirmaSenhaInput = confirmarSenha;
   let sexoInput = sexo;
   const [ showDate, setShowDate] = useState(false);
   const [ data, setData ] = useState(new Date())
@@ -32,24 +33,26 @@ export function EditData(){
   }, [])
 
   async function handleSubmit(){
+    if(senhaInput != confirmaSenhaInput){
+      return Alert.alert('Senha e confirmar senha devem ser iguais')
+    }
     await herokuApiSauce.post(`/user/updateUser/${id}`, {
       senha: senhaInput,
-      senha_confirma: senhaInput,
+      senha_confirma: confirmaSenhaInput,
       email: emailInput.toLowerCase(),
       sexo: sexoInput,
       id_profissao: professionIdSelected,
-      gostos_pessoais: [4, 6, 7, 8, 12, 17]
     },
     {
       headers: {
         Authorization: token
       }
     }).then(response => {
-      // if(response.status == 200 || response.status == 201){
         console.log(response)
         setEmail(emailInput);
-        Alert.alert('Dados alterados com sucesso :)')
-      // }
+        if(response.status == 200){
+          Alert.alert('Dados alterados com sucesso :)')
+        }
     }).catch(() => Alert.alert("Ocorreu um erro :("));
   }
 
@@ -73,7 +76,7 @@ export function EditData(){
               
               <Input placeholder="E-mail" type="email-address" defaultValue={email} onChange={(value: string) => emailInput = value}/>
               <Input placeholder="Senha" type="visible-password" onChange={(value: string) => senhaInput = value}/>
-              <Input placeholder="Confirmar senha" type="visible-password" onChange={(value: string) => senhaInput = value}/>
+              <Input placeholder="Confirmar senha" type="visible-password" onChange={(value: string) => confirmaSenhaInput = value}/>
               <View style={styles.genderContainer}>
                 <Picker style={{width: '70%', height: 50, color: colors.heading, marginTop: 50}}
                   selectedValue={sexo}

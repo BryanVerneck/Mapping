@@ -17,8 +17,14 @@ import { useNavigation } from '@react-navigation/core';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import herokuApiSauce from '../services/HerokuAPISauce';
 import { Data } from '../contexts/userDataContext';
+import { CurrentUserData } from '../contexts/CurrentUserContext';
+import { UserProps } from '../models/UserProps';
+import jwt from 'jwt-decode';
+import herokuApi from '../services/HerokuAPI';
 
 export function UserIdentification(){
+  let user: UserProps;
+  const { setId, setEmail, setNewDate, setNome, setProfessionIdSelected, setSenha, setSexo, setConfirmarSenha } = useContext(CurrentUserData);
   const { email, senha, confirmarSenha, sexo, newDate, professionIdSelected, preferenceSelected } = useContext(Data);
 
   const [ name, setName ] = useState('');
@@ -32,7 +38,7 @@ export function UserIdentification(){
 
     await AsyncStorage.setItem('@mapping:user', name);
 
-    await herokuApiSauce.post('/user/addUser', {
+    await herokuApi.post('/user/addUser', {
       nome: name,
       senha: senha,
       senha_confirma: confirmarSenha,
@@ -41,7 +47,22 @@ export function UserIdentification(){
       sexo: sexo,
       id_profissao: professionIdSelected,
       gostos_pessoais: preferenceSelected
-    }).then(response => console.log(response)).catch(e => console.log(e.data.message));
+    }).then(async response => {
+      console.log(response)
+      user = await jwt(response.data.userInfo.token);
+      console.log(user);
+      await AsyncStorage.setItem('@mapping:Token', response.data.userInfo.token);
+      await AsyncStorage.setItem('@mapping:CurrentUserId', user.userData.id);
+      await AsyncStorage.setItem('@mapping:user', user.userData.nome);
+      setId(user.userData.id);
+      setSenha(user.userData.senha);
+      setConfirmarSenha(user.userData.senha);
+      setEmail(user.userData.email);
+      setNewDate(user.userData.data_nascimento);
+      setSexo(user.userData.sexo);
+      setNome(user.userData.nome);
+      setProfessionIdSelected(user.userData.id_profissao)
+    }).catch(e => console.log(e.data.message));
     
     navigation.navigate('Confirmation');
   }
