@@ -101,47 +101,46 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 40,
-    marginBottom: 40
+    marginVertical: 40
   },
   content: {
-      flex: 1,
-      width: '100%'
+    flex: 1,
+    width: '100%'
   },
   form: {
-      flex: 1,
-      justifyContent: 'center',
-      paddingHorizontal: 54,
-      alignItems: 'center',
+    flex: 1,
+    justifyContent: 'center',
+    paddingHorizontal: 54,
+    alignItems: 'center',
   },
   emoji: {
       fontSize: 44
   },
   header: {
-      alignItems: 'center'
+    alignItems: 'center'
   },
   input: {
-      borderBottomWidth: 1,
-      borderColor: colors.gray,
-      color: colors.heading,
-      width: '100%',
-      fontSize: 18,
-      marginTop: 50,
-      padding: 10,
-      textAlign: 'center'
+    borderBottomWidth: 1,
+    borderColor: colors.gray,
+    color: colors.heading,
+    width: '100%',
+    fontSize: 18,
+    marginTop: 50,
+    padding: 10,
+    textAlign: 'center'
   },
   title: {
-      fontSize: 24,
-      lineHeight: 32,
-      textAlign: 'center', 
-      color: colors.heading,
-      fontFamily: fonts.heading,
-      marginVertical: 20,
+    fontSize: 24,
+    lineHeight: 32,
+    textAlign: 'center', 
+    color: colors.heading,
+    fontFamily: fonts.heading,
+    marginVertical: 20,
   },
   footer: {
     width: '100%',
     paddingHorizontal: 20,
-    marginTop: 20 
+    marginTop: 20  
   },
   checkbox: {
       alignSelf: "center",
@@ -157,11 +156,10 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
   list: {
-    // flex: 1,
+    flex: 1,
     paddingHorizontal: 5,
     justifyContent: 'center',
     marginTop: 20,
-    height: 450
   },
   professionsContainer: {
     flexDirection: 'row',

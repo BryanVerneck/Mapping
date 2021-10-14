@@ -69,7 +69,8 @@ export function Preferences(){
 
   if(loading){
     return <Load />
-}
+  }
+  
   return(
     <View style={styles.container}>
       <View style={styles.content}>

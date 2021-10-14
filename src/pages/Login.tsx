@@ -35,7 +35,7 @@ export function Login(){
   // }, []);
 
   async function handleLogin(){
-    if(!emailInput || password){
+    if(!emailInput || !password){
       return Alert.alert("Insira seu email e senha")
     }
     await api.post('/user/login', { 
