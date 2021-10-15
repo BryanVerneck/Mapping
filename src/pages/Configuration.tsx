@@ -15,6 +15,10 @@ export function Configuration(){
       navigation.navigate('EditData');
   }
 
+  function handleEditPreferences(){
+    navigation.navigate('EditPreferences');
+}
+
   function LogOut(){
     AsyncStorage.removeItem('@mapping:userToken')
     navigation.navigate('Login');
@@ -35,7 +39,7 @@ export function Configuration(){
               </View>
               <View style={styles.options}>
                 <Button title="Editar dados" onPress={handleEditData} alt={false}/>
-                <Button title="Editar preferências" onPress={handleEditData} alt={false}/>
+                <Button title="Editar preferências" onPress={handleEditPreferences} alt={false}/>
                 <Button title="Sair" onPress={LogOut} alt={false} style={styles.logOut}/>
               </View>
             </View>
@@ -98,5 +102,4 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginVertical: 50
   }
-
 })

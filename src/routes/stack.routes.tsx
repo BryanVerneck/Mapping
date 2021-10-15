@@ -14,6 +14,7 @@ import { Registration } from '../pages/Registration';
 import { PlaceDetail } from '../pages/placeDetail';
 import { Profession } from '../pages/Profession';
 import { EditData } from '../pages/EditData';
+import { EditPreferences } from '../pages/EditPreferences';
 import { Configuration } from '../pages/Configuration';
 
 const stackRoutes = createStackNavigator();
@@ -73,16 +74,20 @@ const AppRoutes: React.FC = () => (
       component={Profession}
   />
 
-<stackRoutes.Screen 
+  <stackRoutes.Screen 
       name="EditData"
       component={EditData}
   />
 
-<stackRoutes.Screen 
+  <stackRoutes.Screen 
+      name="EditPreferences"
+      component={EditPreferences}
+  />
+
+  <stackRoutes.Screen 
       name="Configuration"
       component={Configuration}
   />
-
 
   </stackRoutes.Navigator>
 )
