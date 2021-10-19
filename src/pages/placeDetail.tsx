@@ -46,13 +46,23 @@ interface Params {
 
 export function PlaceDetail(){
   const { id } = useContext(CurrentUserData);
+  const [reviews, setReviews] = useState([]);
   const [reviewed, setReviewed] = useState(false);
   const [rateIdSelected, setRateIdSelected] = useState('');
+  const [ token, setToken ] = useState('')
   const [rateOptions, setRateOptions] = useState(rating.options);
   const [showDialog, setShowDialog] = useState(false);
   const route = useRoute();
   const { place } = route.params as Params;
   
+  useEffect(() => {
+    async function loadStorageToken(){
+      const tkn = await AsyncStorage.getItem('@mapping:Token');
+      setToken(tkn || '');  
+    }
+    loadStorageToken();
+  }, [])
+
   async function submitRate(){
     await herokuApiSauce.post('/reviews/addReview', {
       descricao: "dummy",
@@ -62,25 +72,44 @@ export function PlaceDetail(){
       nome_estabelecimento: place.name,
       localizacao: place.geometry.location.lat + "|" + place.geometry.location.lng,
       types: place.types,
-    }).then(response => {console.log(response), Alert.alert("Avaliação registrada com sucesso! 😀")}).catch(e => {console.log(e.data.message), Alert.alert("Ocorreu um erro ao tentar registar sua avaliação 😞")});
+    }).then(response => {
+      console.log(response)
+      if(response.status == 201){
+        Alert.alert("Avaliação registrada com sucesso! 😀")
+      }
+      else{
+        Alert.alert("Você já avaliou este local anteriormente 😯")
+      }
+    }).catch(e => {console.log(e.data.message)});
     setShowDialog(false)
+    setReviewed(true);
     await AsyncStorage.setItem('@mapping:placeRate', rateIdSelected);
     // getReviews(parseInt(id));
   }
 
-  function getReviews(userId: number) {
-    herokuApi.get(`user/reviews/${userId}`)
+  function getReviews() {
+    herokuApi.get(`user/reviews/${id}`,
+    {
+      headers: {
+        Authorization: token
+      }
+    })
     .then(response => {
-      console.log(response)
       if(response.data.userReviews.id_estabelecimento_places == place.place_id){
         setReviewed(true);
       }
     })  
   }
 
+  function checkReview(){
+
+  }
+
   useEffect(() => {
-    console.log(id)
-  }, [])
+    if(token){
+      getReviews();
+    }
+  }, [token])
 
   function handleRateSelected(item: RatingProps) {
     console.log(item.value);
@@ -117,7 +146,6 @@ export function PlaceDetail(){
             {place.user_ratings_total ? ` (${place.user_ratings_total})` : 'Avaliações não disponíveis :('}
             </Text>
           </View>
-          <Text>Aberto: {place.opening_hours.open_now}</Text>
           <Text style={styles.placeText}>Endereço: {place.vicinity}</Text>
           <Text style={styles.typesText}>{place.types.join(', ')}</Text>
           </View>
