@@ -3,7 +3,8 @@ import {
   StyleSheet, 
   View, 
   Text,
-  LogBox, 
+  LogBox,
+  Alert, 
   } from 'react-native';
 import { Button } from '../components/Button';
 import colors from '../../styles/colors';
@@ -16,6 +17,7 @@ import { Load } from '../components/Load';
 import { Data } from '../contexts/userDataContext';
 import { CurrentUserData } from '../contexts/CurrentUserContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import herokuApiSauce from '../services/HerokuAPISauce';
 
 interface PreferenceProps {
   id: string;
@@ -32,24 +34,30 @@ export function EditPreferences(){
   const [filter2, setFilter2] = useState([]);
   const [filter3, setFilter3] = useState([]);
 
-  async function loadStorageToken(){
-    const tkn = await AsyncStorage.getItem('@mapping:Token');
-    setToken(tkn || '');  
-  }
+  useEffect(() => {
+    async function loadStorageToken(){
+      const tkn = await AsyncStorage.getItem('@mapping:Token');
+      setToken(tkn || '');  
+    }
+    loadStorageToken();
+  }, [])
   
   useEffect(() => {
-    loadStorageToken();
+    setPreferenceSelected(preferenceSelected.splice(1, preferenceSelected.length));
     LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
   }, [])
 
   useEffect(() => {
     if(token){
       fetchPlaces();
-      getUserPreferences();
+      // getUserPreferences();
     }
   }, [token])
 
-  const navigation = useNavigation();
+  useEffect(() => {
+    console.log("TESTE")
+    console.log(preferenceSelected);
+  }, [preferenceSelected])
 
   async function fetchPlaces() {
     const { data } = await herokuApi.get(`/preferences`);
@@ -59,16 +67,18 @@ export function EditPreferences(){
     setPreference(data.preferencesInfo);
   }
 
-  async function getUserPreferences() {
-    if(token){
-      const { data } = await herokuApi.get(`/user/preferences/${id}`, 
-      {
-        headers: {
-          Authorization: token
-        },
-      })
-    }
-  }
+  // async function getUserPreferences() {
+  //   if(token){
+  //     await herokuApi.get(`/user/preferences/${id}`, 
+  //     {
+  //       headers: {
+  //         Authorization: token
+  //       },
+  //     }).then(res => test = res.data.userPreference.id)
+  //     .catch(error => error.message);
+  //     setPreferenceSelected(test);
+  //   }
+  // }
 
   useEffect(() => {
     const cat1 = preference.filter((item: PreferenceProps) => item.id_categoria === "1")
@@ -79,9 +89,24 @@ export function EditPreferences(){
     setFilter3(cat3);
   }, [preference])
 
-  function handleSubmit(){
-    setPreferenceSelected(preferenceSelected.splice(1, preferenceSelected.length));
-    navigation.navigate('Profession');
+  async function handleSubmit(){
+
+    console.log("Teste")
+    console.log(preferenceSelected)
+
+    await herokuApi.post(`user/updateUserPreferences/${id}`, {
+      gostos_pessoais: preferenceSelected
+    },
+    {
+      headers: {
+        Authorization: token
+      }
+    }).then(res => {
+      console.log(res.data);
+      Alert.alert("Preferências atualizadas com sucesso!");
+    })
+    
+    // navigation.navigate('Profession');
   }
 
   function handlePreferenceSelected(item: string){
