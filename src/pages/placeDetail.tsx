@@ -38,6 +38,9 @@ interface Params {
         lng: number;
       }
     }
+    opening_hours: {
+      open_now: boolean;
+    }
   }
 }
 
@@ -114,6 +117,7 @@ export function PlaceDetail(){
             {place.user_ratings_total ? ` (${place.user_ratings_total})` : 'Avaliações não disponíveis :('}
             </Text>
           </View>
+          <Text>Aberto: {place.opening_hours.open_now}</Text>
           <Text style={styles.placeText}>Endereço: {place.vicinity}</Text>
           <Text style={styles.typesText}>{place.types.join(', ')}</Text>
           </View>

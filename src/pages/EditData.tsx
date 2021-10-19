@@ -75,8 +75,8 @@ export function EditData(){
               </View>
               
               <Input placeholder="E-mail" type="email-address" defaultValue={email} onChange={(value: string) => emailInput = value}/>
-              <Input placeholder="Senha" type="visible-password" onChange={(value: string) => senhaInput = value}/>
-              <Input placeholder="Confirmar senha" type="visible-password" onChange={(value: string) => confirmaSenhaInput = value}/>
+              <Input placeholder="Senha" type="default" onChange={(value: string) => senhaInput = value}/>
+              <Input placeholder="Confirmar senha" type="default" onChange={(value: string) => confirmaSenhaInput = value}/>
               <View style={styles.genderContainer}>
                 <Picker style={{width: '70%', height: 50, color: colors.heading, marginTop: 50}}
                   selectedValue={sexo}

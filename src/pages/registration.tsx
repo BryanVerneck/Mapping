@@ -59,8 +59,8 @@ export function Registration(){
                 </Text>
               </View>
               <Input placeholder="E-mail" type="email-address" onChange={(value: string) => setEmail(value)}/>
-              <Input placeholder="Senha" type="visible-password" onChange={(value: string) => setSenha(value)}/>
-              <Input placeholder="Confirmar senha" type="visible-password" onChange={(value: string) => setConfirmarSenha(value)}/>
+              <Input placeholder="Senha" type="default" onChange={(value: string) => setSenha(value)}/>
+              <Input placeholder="Confirmar senha" type="default" onChange={(value: string) => setConfirmarSenha(value)}/>
               <View style={styles.genderContainer}>
                 <Picker style={{width: '70%', height: 50, color: colors.heading, marginTop: 50, textAlign: 'center'}}
                   selectedValue={sexo}
