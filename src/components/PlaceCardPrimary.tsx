@@ -32,7 +32,7 @@ export const PlaceCardPrimary = ({ data, ...rest} : PlaceProps) => {
               <Text style={styles.text}>
                   <Text numberOfLines={1} style={styles.nameText}>{data.name}</Text> 
                   <Text style={styles.kmText}> ({data.distanceKms.toFixed(1)} KM)</Text>
-                  {data.similaridade != null ? <Text style={styles.Similiaridade}> {`\n`}{`\n`}Similiaridade: {(data.similaridade * 100).toFixed(1)}</Text> : data.similaridade}
+                  {data.similaridade != null ? <Text style={styles.Similiaridade}> {`\n`}{`\n`}Similiaridade: {(data.similaridade * 100).toFixed(1)}%</Text> : data.similaridade}
               </Text>
 
             </View>

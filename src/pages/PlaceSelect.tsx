@@ -18,6 +18,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from '../services/api';
 import herokuApi from '../services/HerokuAPI';
 import ApiMapping from '../services/ApiMapping';
+import { Button } from '../components/Button';
+import { RatingButton } from '../components/RatingButton';
+import { SearchButton } from '../components/SearchButton';
 
 interface TypeProps {
     key: string;
@@ -127,6 +130,7 @@ export function PlaceSelect(){
   async function fetchPlaces() {
     // const { data } = await mapsApi.get(`/json?location=${lat},${long}&radius=2000&keyword=restaurant|bar|park|museum&key=AIzaSyC_gkGpo4lfPP7bVMqBeMfu2nB7JmRfgF0`);
     // await ApiMapping.get(`/recommender/477/2/restaurant/-25.4444/-49.2881`).then(res => setRestaurant(res.data.results));
+    console.log("Fetch")
 
     await herokuApi.post(`/recommender/${id}/restaurant`, {
       lat: "-25.4444",
@@ -241,7 +245,9 @@ export function PlaceSelect(){
                       // }
                     />
             </View>
-
+            
+              <SearchButton title="Atualizar" alt={false} onPress={fetchPlaces}/>
+            
         </View>
     )
 }
